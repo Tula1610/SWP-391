@@ -1,0 +1,18 @@
+.footer {
+    background-color: #F06464FF;
+    margin-top: 30px;
+    
+}
+
+.footer .col-4 p {
+    color: white;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.footer .col-4:nth-child(3) img {
+    width: 180px;
+}
+.footer .col-4:nth-child(2) img {
+    width: 70px;
+}

@@ -1,0 +1,32 @@
+/*Left*/
+.container-fluid {
+    background-color: #633D27FF;
+}
+.container .row .col-5 span img {
+    width: 60px;
+}
+.container .row .col-5 .nav-link {
+    color: white;
+    border-radius: 10%;
+    transition: .5s;
+}
+.container .row .col-5 .nav-link:hover {
+    background-color: white;
+    color: #633D27FF;
+    cursor: pointer;
+}
+
+
+/*Center*/
+.container .row .col-5 .center-img img {
+    width: 180px;
+}
+
+
+/*Right*/
+.container .col-2 .btn-outline-primary {
+    margin-right: 20px;
+}
+.container .col-2 button {
+    border-radius: 10%;
+}

@@ -1,0 +1,80 @@
+.content .container {
+    background-color: rgb(155, 95, 60);
+    margin-top: 30px;
+    padding-bottom: 25px;
+}
+
+.content .container-heading {
+    color: white;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: fantasy;
+}
+
+.avatar {
+    display: flex;
+    justify-content: center;
+}
+
+.avatar img {
+    width: 120px;
+    height: 120px;
+    object-position: center;
+    object-fit: cover;
+    border-radius: 5%;
+    border-radius: 60px;
+}
+
+.customer-name{
+    display: flex;
+    justify-content: center;
+}
+
+.customer-name h1{
+    font-size: 20px;
+    font-family: Cursive;
+}
+
+.change {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-change{
+    background-color: rgb(59, 121, 59);
+    color: bisque;
+    margin-bottom: 10px;
+}
+
+.content .input-group, .content .row {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    font-family: Cursive;
+}
+
+.content .input-group:nth-child(4) {
+    padding-right: 40px;
+    text-align: center;
+}
+
+.content .row label {
+    color: white;
+}
+
+.content .btn-success {
+    display: block;
+    margin-left: auto;
+    margin-right: 10%;
+}
+
+.link {
+    display: flex;
+    justify-content: end;
+    margin-right: 7%;
+}
+
+.nav-item {
+    color: rgb(155, 95, 60);
+}

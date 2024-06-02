@@ -1,0 +1,89 @@
+/*Main*/
+.main {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+    margin-left: 0%;
+    margin-left: 0%;
+    margin-top: 170px;
+    margin-bottom: 50px;
+    background: rgb(166, 104, 68);
+}
+
+
+/*Main-sidebar*/
+.main-sidebar {
+    margin-top: 0px;
+    margin-left: 0px;
+    padding: 20px;
+    border-right: 10px solid white;
+    width: 100%;
+}
+.main-sidebar h3 {
+    color: white;
+    font-size: 100%;
+}
+.main-sidebar-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    color: white;
+}
+
+.main-sidebar-row div {
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
+
+.new {
+    display: flex;
+    justify-content: center;
+}
+
+.add-new button{
+    background-color: wheat;
+    align-items: center;
+    margin-top: 10px;
+}
+/*Main-content*/
+.main-content{
+    padding-left: 50px;
+    width: 100%;
+}
+
+.main-row {
+    display: flex;
+    justify-content: center;
+}
+
+.main-content h2 {
+    margin-top: 50px;
+    align-items: center;
+    text-align: center;
+    color: antiquewhite;
+}
+
+.main-content-row-box img {
+    width: 120px;
+    height: 120px;
+    object-position: center;
+    object-fit: cover;
+    border-radius: 60px;
+}
+
+.main-content-row-box {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.main-content-row-box h3 {
+    display: inline-block;
+    color: white;
+    font-size: 20px;
+    margin-top: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-family: Cursive;
+}
+
+
