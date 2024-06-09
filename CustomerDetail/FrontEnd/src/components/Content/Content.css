@@ -36,15 +36,9 @@
     font-family: Cursive;
 }
 
-.change {
-    display: flex;
-    justify-content: center;
-}
-
-.btn-change{
-    background-color: rgb(59, 121, 59);
-    color: bisque;
-    margin-bottom: 10px;
+.form-check {
+    margin-left: 15%;
+    margin-top: 10%;
 }
 
 .content .input-group, .content .row {
@@ -66,15 +60,5 @@
 .content .btn-success {
     display: block;
     margin-left: auto;
-    margin-right: 10%;
-}
-
-.link {
-    display: flex;
-    justify-content: end;
-    margin-right: 7%;
-}
-
-.nav-item {
-    color: rgb(155, 95, 60);
+    margin-right: 40px;
 }

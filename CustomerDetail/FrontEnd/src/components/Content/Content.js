@@ -20,8 +20,8 @@ export default class Content extends Component {
             <div className='row align-items-center' >
               <div className='col-6' >
                 <div className='input-group mb-3' >
-                  <div class="input-group-text">Accumulated Points</div>
-                  <div class="input-group-text">Point</div>
+                  <div class="input-group-text">Full Name</div>
+                  <input type='text' className='form-control' id='name' placeholder='Fullname' required ></input>
                 </div>
               </div>
 
@@ -37,9 +37,23 @@ export default class Content extends Component {
               <div className='col-6' >
                 <div className='input-group mb-3' >
                   <div class="input-group-text">Gender</div>
-                  <input type='text' className='form-control' id='gender' placeholder='Male/Female' pattern='^(Male|Female)$' title='Please enter either Male or Female' required ></input>
+
+                  <div className='col-2' >
+                    <div className='form-check' >
+                      <input class="form-check-input" type="radio" value="Male" name='gender' id='male' />
+                      <label className='form-check-label' for='male' >Male</label>
+                    </div>
+                  </div>
+                  
+                  <div className='col-2' >
+                    <div className='form-check' >
+                      <input class="form-check-input" type="radio" value="Female" name='gender' id='female' />
+                      <label className='form-check-label' for='female' >Female</label>
+                    </div>
+                  </div>
                 </div>
               </div>
+
               <div className='col-6' >
                 <div className='input-group mb-3' >
                   <div class="input-group-text">Phone Number</div>
@@ -55,6 +69,7 @@ export default class Content extends Component {
                   <input type='text' className='form-control' id='address' placeholder='123 Paster' required ></input>
                 </div>
               </div>
+
               <div className='col-6' >
                 <div className='input-group mb-3' >
                   <div class="input-group-text">Email</div>
