@@ -6,6 +6,10 @@
     height: 100vh;
   }
   
+.spinnerLoader-component h1 {
+  color: white;
+}
+
   .spinnerLoader-component img {
     width: 20%;
     border-radius: 50%;
@@ -15,9 +19,9 @@
   
   @keyframes spinnerLoader {
     from {
-      transform: translateX(-150px);
+      transform: translateX(-170px);
     }
     to {
-      transform: translateX(150px);
+      transform: translateX(170px);
     }
   }

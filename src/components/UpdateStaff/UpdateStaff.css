@@ -1,5 +1,5 @@
 /* Component */
-.addStaff-component {
+.updateStaff-component {
     margin-bottom: 30px;
     animation: 1s ease-in-out component-motion;
 }
@@ -9,17 +9,19 @@
     to {transform: translateX(0);}
 }
 
-.addStaff-component .container {
+.updateStaff-component .container {
     background: rgb(185,114,74); 
     background: linear-gradient(90deg, #B9724A, #B05F62, #945774, #6C5479, #46506E, #2F4858);
+    margin-bottom: 30px;
     border-radius: 20px;
     box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.15);
     padding-bottom: 10px;
     padding-top: 25px;
 }
 
+
 /* Heading */
-.addStaff-component h1 {
+.updateStaff-component .row h1 {
     color: white;
     font-weight: 500;
     padding-bottom: 15px;
@@ -27,32 +29,16 @@
     text-shadow: 0 5px 10px rgb(0, 0, 0, 0.15);
 }
 
-/* Heading Motion */
-.addStaff-component .heading-motion {
-    width: 20px;
-    height: 20px;
-    background-color: rgb(0, 201, 170);
-    border-radius: 50%;
-    animation: 5s ease-in-out infinite alternate heading-motion;
-}
-
-@keyframes heading-motion {
-    from {
-        transform: translateX(70px);
-    }
-    to {
-        transform: translateX(550px);
-    }
-}
 
 /* Back Button */
-.addStaff-component .row .back-button img {
+.updateStaff-component .row .back-button img {
     width: 50px;
     margin-left: 50px;
 }
 
-/* GIF */
-.addStaff-component .col-4 img {
+
+ /* GIF */
+.updateStaff-component .col-4 img {
     width: 190px;
     margin-left: 120px;
     margin-top: 20px;
@@ -62,7 +48,7 @@
 
 
 /* Input */
-.addStaff-component .col-4 .row input, .addStaff-component .col-4 .row select {
+.updateStaff-component .col-4 .row input, .updateStaff-component .col-4 .row select {
     background-color: rgba(255, 255, 255, 0.85);
     width: 100%;
     padding: 10px 20px;
@@ -70,40 +56,37 @@
     border: none;
     box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.15);
 }
-.addStaff-component .col-4 .row input:hover {
+.updateStaff-component .col-4 .row input:hover {
     background-color: rgba(255, 255, 255, 0.75);
 }
 
-.addStaff-component .col-4 .row label {
+.updateStaff-component .col-4 .row label {
     color: white;
     font-weight: 500;
     font-size: 1.1rem;
     margin-bottom: 8px;
 }
 
-
 /* Switch Input */
-.addStaff-component .col-4 .row .form-check-input {
-    background-color: white;
+.updateStaff-component .col-4 .row .form-check-input {
     width: 15%;
     margin-right: 20px;
     border-radius: 20px;
     cursor: pointer;
     transition: .4s;
 }
-.addStaff-component .col-4 .row .form-check-input:checked {
+.updateStaff-component .col-4 .row .form-check-input:checked {
     background-color: rgb(0, 201, 170);
 }
 
-
 /* Submit Button */
-.addStaff-component .submit-button {
+.updateStaff-component .submit-button {
     text-align: center;
     margin-top: 15px;
     margin-bottom: 15px;
 }
 
-.addStaff-component .submit-button button {
+.updateStaff-component .submit-button button {
     background-color: rgb(0, 201, 170);
     color: white;
     font-weight: 500;
@@ -113,16 +96,16 @@
     border: none;
     transition: .2s;
 }
-.addStaff-component .submit-button button:hover {
+.updateStaff-component .submit-button button:hover {
     background-color: white;
     color: rgb(0, 201, 170);
     box-shadow: 7px 7px 10px rgb(0, 0, 0, 0.3);
 }
-.addStaff-component .submit-button button:active {
+.updateStaff-component .submit-button button:active {
     opacity: .7;
 }
 
-.addStaff-component .notification {
+.updateStaff-component .notification {
     color: white;
     font-weight: 500;
     font-size: 1.5rem;
