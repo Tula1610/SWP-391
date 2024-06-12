@@ -1,0 +1,23 @@
+.spinnerLoader-component {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 201, 170);
+    height: 100vh;
+  }
+  
+  .spinnerLoader-component img {
+    width: 20%;
+    border-radius: 50%;
+    box-shadow: -10px 10px 10px rgb(0,0,0, 0.3);
+    animation: 3s ease-in-out spinnerLoader;
+  }
+  
+  @keyframes spinnerLoader {
+    from {
+      transform: translateX(-150px);
+    }
+    to {
+      transform: translateX(150px);
+    }
+  }
