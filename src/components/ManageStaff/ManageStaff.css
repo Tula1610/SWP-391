@@ -1,13 +1,18 @@
+/* Component */
 .manageStaff-component {
     margin-bottom: 30px;
+    animation: 1s ease-in-out component-motion;
 }
 
+@keyframes component-motion {
+    from { transform: translateX(-1300px); }
+    to {transform: translateX(0);}
+}
 
 /* Table */
 .manageStaff-component .table {
     position: relative;
     background: rgb(185,114,74); 
-    background: linear-gradient(90deg, #B9724A, #B05F62, #945774, #6C5479, #46506E, #2F4858);
     backdrop-filter: blur(7px);
     box-shadow: 0 .4rem .8rem #0005;
     border-radius: .8rem;
@@ -68,42 +73,47 @@
     background-color: #fff6;
 }
 
-/* Delete Button */
-.manageStaff-component table #delete-button  {
+/* Dropdown Toggle */
+.manageStaff-component tbody .dropdown-toggle {
     background-color: rgb(0, 201, 170);
     color: white;
-    padding: 2px 15px;
-    border: none;
-    border-radius: 20px;
-    padding: 7px 20px;
-    font-weight: 500;
-    font-size: 1rem;
-    transition: .05s;
-}
-.manageStaff-component table #delete-button:active {
-    opacity: .65;
-    box-shadow: 4px 4px 5px rgb(0, 0, 0, 0.15);
+    transition: .5s;
 }
 
-
-/* Update Button */
-.manageStaff-component tbody .update-button {
-    background-color: rgb(0, 201, 170);
-    color: white;
-    text-decoration: none;
+/* Dropdown Menu */
+.manageStaff-component tbody .dropdown-menu {
     box-sizing: border-box;
-    padding: 8.2px 18px;
-    border-radius: 20px;
-    font-weight: 500;
-    font-size: 1rem;
-    border: none;
+    margin-top: 5px;
+    border-radius: 15px;
+    padding: 10px 10px;
+    box-shadow: 0 5px 5px rgb(0, 0, 0, 0.15);
     cursor: pointer;
 }
-.manageStaff-component tbody .update-button:active {
-    opacity: .65;
-    box-shadow: 4px 4px 5px rgb(0, 0, 0, 0.15);
+
+
+/* Dropdown Item */
+.manageStaff-component tbody .update-button {
+    text-decoration: none;
+    color: black;
 }
 
+.manageStaff-component tbody .dropdown-item  {
+    font-weight: 500;
+    font-size: 1rem;
+    opacity: .6;
+    transition: .2s;
+}
+.manageStaff-component tbody .dropdown-item:hover {
+    border-radius: 9px;
+    transform: translateX(4px);
+    opacity: .9;
+    box-shadow: 0 2px 2px rgb(0, 0, 0, 0.05);
+}
+.manageStaff-component tbody .dropdown-item:active {
+    color: black;
+    background-color: rgb(0, 0, 0, 0.15);
+    opacity: .9;
+}
 
 /* Add Button */
 .manageStaff-component .table .add-button {

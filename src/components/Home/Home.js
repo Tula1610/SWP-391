@@ -6,8 +6,6 @@ export default function Home() {
     <>
         <div>
           <Link to='/manageStaff' >Manage Staff</Link>
-          <p>--</p>
-          <Link to='/manageService' >Manage Service</Link>
         </div>
     </>
   )
