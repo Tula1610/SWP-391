@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connect to mongdoDB
 const dbURL = process.env.MONGODB_URI;
-mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dbURL)
     .then((result) => {
         app.listen(port),
         console.log(`Server is running at port ${port}`),
