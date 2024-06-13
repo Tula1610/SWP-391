@@ -1,0 +1,104 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-container {
+  box-shadow: 0px 4px 5px 0px rgba(191, 122, 122, 0.71);
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(191, 122, 122, 0.71);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(191, 122, 122, 0.71);
+}
+
+.navbar {
+  background-color:  #633D27FF;
+  max-width: 2000px;
+  padding: 20px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left img {
+  width: 60px;
+  margin-right: 20px;
+}
+
+.navbar-left div {
+  color: white;
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+.navbar-right {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right .sign-in,
+.navbar-right .logout {
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+header nav a {
+  text-decoration: none;
+  margin: 0 1em;
+}
+
+main {
+  padding: 20px;
+}
+
+#website-info-section,
+#edit-website-info-section {
+  background-color: white;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+#website-info-section h2,
+#edit-website-info-section h2 {
+  margin-top: 0;
+}
+
+#edit-website-info-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+
+#edit-website-info-form label {
+  margin-bottom: 10px;
+}
+
+#edit-website-info-form input[type="text"] {
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+#edit-website-info-form button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#edit-website-info-form button[type="submit"]:hover {
+  background-color: #45a049;
+}

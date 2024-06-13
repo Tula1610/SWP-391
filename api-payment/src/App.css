@@ -1,0 +1,171 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-container {
+  box-shadow: 0px 4px 5px 0px rgba(191, 122, 122, 0.71);
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(191, 122, 122, 0.71);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(191, 122, 122, 0.71);
+}
+
+.navbar {
+  background-color:  #633D27FF;
+  max-width: 2000px;
+  padding: 20px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left img {
+  width: 60px;
+  margin-right: 20px;
+}
+
+.navbar-left div {
+  color: white;
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+.navbar-right {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right .sign-in,
+.navbar-right .logout {
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+header nav a {
+  text-decoration: none;
+  margin: 0 1em;
+}
+
+/*
+.navbar-container {
+  width: 100%;
+  background-color: #333;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+  margin-right: 20px;
+}
+
+.nav-item {
+  margin: 0 10px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  margin-left: 20px;
+}
+
+.nav-link {
+  margin-left: 10px;
+  color: #ddd;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-right-list .nav-item {
+  margin-left: 20px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.sign-in {
+  color: #ddd;
+}
+
+.logout {
+  text-align: center;
+  color: #f44336;
+}
+
+.logout:hover {
+  color: #e57373;
+}
+*/
+main {
+  padding: 2em;
+}
+
+form {
+  background: white;
+  padding: 1em;
+  margin: 1em 0;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+form label {
+  display: block;
+  margin: 0.5em 0 0.2em;
+}
+
+form input, form select, form button {
+  width: 100%;
+  padding: 0.5em;
+  margin: 0.5em 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  background-color: rgb(155, 95, 60);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: rgb(155, 95, 60);
+}

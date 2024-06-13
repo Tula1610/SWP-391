@@ -1,0 +1,89 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-container {
+  box-shadow: 0px 4px 5px 0px rgba(191, 122, 122, 0.71);
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(191, 122, 122, 0.71);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(191, 122, 122, 0.71);
+}
+
+.navbar {
+  background-color:  #633D27FF;
+  max-width: 2000px;
+  padding: 20px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left img {
+  width: 60px;
+  margin-right: 20px;
+}
+
+.navbar-left div {
+  color: white;
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+.navbar-right {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right .sign-in,
+.navbar-right .logout {
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+.edit-price-container {
+  margin: 20px;
+}
+
+.edit-price-container h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.edit-price-container div {
+  margin-bottom: 15px;
+}
+
+.edit-price-container label {
+  display: block;
+  font-weight: bold;
+}
+
+.edit-price-container input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.edit-price-container button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-price-container button:hover {
+  background-color: #0056b3;
+}
