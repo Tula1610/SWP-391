@@ -24,7 +24,6 @@ const createService = (req, res) => {
         })
 }
 
-
 // READ
 const readAllService = (req, res) => {
     Service.find().sort({ id: 1 })
@@ -64,8 +63,8 @@ const deleteOneService = (req, res) => {
 const updateOneService = (req, res) => {
     const oldId = req.body.oldId;
     const newId = req.body.newId;
-    let query = {id: newId.toString()}
-    
+    let query = { id: newId.toString() }
+
     Service.findOne(query)
         .then((result) => {
             if (result && result.id !== oldId) res.json({ message: 0 });
