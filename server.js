@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv').config();
-const staffRoute = require('./routes/staffRouter');
 const serviceRoute = require('./routes/serviceRouter');
 
 
@@ -16,9 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// Connect to mongdoDB
+// Connect to mongoDB
 const dbURL = process.env.MONGODB_URI;
-mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dbURL)
     .then((result) => {
         app.listen(port),
         console.log(`Server is running at port ${port}`),
@@ -28,8 +27,7 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 app.get('/', (req, res) => {
-    res.send('<h1>Welcome back</h1>');
+    res.send('<h1>Welcome back users</h1>');
 });
 
-/* app.use('/staffs', staffRoute); */
 app.use('/services', serviceRoute);

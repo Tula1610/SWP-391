@@ -1,98 +1,101 @@
-const Service = require('../models/serviceSchema');
+const Service = require("../models/serviceSchema");
 
 const indexService = (req, res) => {
-    res.send('<h1>This is service page</h1>');;
-}
+  res.send("<h1>This is service page</h1>");
+};
 
 // CREATE
-const createService = (req, res) => {
-    let query = {id: req.body.id.toString() };
-    Service.findOne(query)
-        .then(result => {
-            if (result) res.json({ message: 0 });
-            else {
-                const newService = new Service({
-                    id: req.body.id,
-                    name: req.body.name,
-                    price: req.body.price
-                });
+const createService = async (req, res) => {
+  let query = { id: req.body.id.toString() };
 
-                newService.save()
-                    .then(result => res.json(result))
-                    .catch(err => console.log(err));
-            }
+  await Service.findOne(query).then((result) => {
+    if (result) res.json({ message: 0 });
+    else {
+      const newService = new Service({
+        id: req.body.id,
+        name: req.body.name,
+        price: req.body.price,
+      });
+
+      newService
+        .save()
+        .then((result) => {
+          res.send(result);
         })
-}
+        .catch((err) => console.log(err));
+    }
+  });
+};
 
 // READ
-const readAllService = (req, res) => {
-    Service.find().sort({ id: 1 })
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-}
+const readAllService = async (req, res) => {
+  await Service.find()
+    .sort({ id: 1 })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-const readOneService = (req, res) => {
-    const id = req.params.id;
+const readOneService = async (req, res) => {
+  const id = req.params.id;
 
-    Service.findOne({ id: id })
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-}
-
+  await Service.findOne({ id: id })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 // DELETE
-const deleteOneService = (req, res) => {
-    const id = req.params.id;
+const deleteOneService = async (req, res) => {
+  let query = { id: req.params.id };
 
-    Service.deleteOne({ id: id })
-        .then(() => {
-            res.redirect('/services/read');
-        })
-        .catch(err => console.log(err));
-}
+  await Service.deleteOne(query)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => console.log(err));
+};
 
 // UPDATE
-const updateOneService = (req, res) => {
-    const oldId = req.body.oldId;
-    const newId = req.body.newId;
-    let query = { id: newId.toString() }
+const updateOneService = async (req, res) => {
+  const oldId = req.body.oldId;
+  const id = req.body.id;
+  let query = { id: id };
 
-    Service.findOne(query)
-        .then((result) => {
-            if (result && result.id !== oldId) res.json({ message: 0 });
-            else {
-                Service.deleteOne({ id: req.body.oldId })
-                    .then(result => res.send(result))
-                    .catch(err => console.log(err));
+  const existingService = await Service.findOne(query);
 
-                const newService = new Service({
-                    id: req.body.newId,
-                    name: req.body.name,
-                    price: req.body.price
-                });
+  if (existingService && existingService.id !== oldId) res.json({ message: 0 });
+  else {
+    await Service.deleteOne({ id: oldId })
+      .then(result => console.log("Deleted Service"))
+      .catch((err) => console.log(err));
 
-                newService.save()
-                    .then(result => res.json(result))
-                    .catch(err => console.log(err));
-            }
-        })
-        .catch(err => console.log(err));
-}
+    const newService = await new Service({
+      id: id,
+      name: req.body.name,
+      price: req.body.price,
+    });
 
+    await newService
+      .save()
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => console.log(err));
+  }
+};
 
 module.exports = {
-    indexService,
-    readAllService,
-    readOneService,
-    deleteOneService,
-    createService,
-    updateOneService
-}
+  indexService,
+  readAllService,
+  readOneService,
+  deleteOneService,
+  createService,
+  updateOneService,
+};
