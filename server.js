@@ -2,8 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv').config();
-const Staff = require('./models/staffSchema');
 const staffRoute = require('./routes/staffRouter');
+const serviceRoute = require('./routes/serviceRouter');
 
 
 const app = express();
@@ -31,4 +31,5 @@ app.get('/', (req, res) => {
     res.send('<h1>Welcome back</h1>');
 });
 
-app.use('/staffs', staffRoute);
+/* app.use('/staffs', staffRoute); */
+app.use('/services', serviceRoute);
