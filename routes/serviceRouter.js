@@ -7,8 +7,8 @@ const router = express.Router();
 router.get('/', serviceController.indexService);
 router.get('/create', serviceController.createService);
 router.get('/read', serviceController.readAllService);
-/*router.get('/read/:id', serviceController.readOneStaff);
-router.post('/delete/:id', serviceController.deleteOneStaff);
-router.post('/update', serviceController.updateOneStaff); */
+//router.get('/read/:id', serviceController.readOneService);
+router.get('/delete', serviceController.deleteOneService);
+//router.post('/update', serviceController.updateOneStaff);
 
 module.exports = router;

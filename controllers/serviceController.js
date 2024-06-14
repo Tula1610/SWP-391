@@ -54,7 +54,7 @@ const deleteOneService = (req, res) => {
 
     Service.deleteOne({ id: id })
         .then(() => {
-            res.redirect('/services');
+            res.redirect('/services/read');
         })
         .catch(err => console.log(err));
 }
