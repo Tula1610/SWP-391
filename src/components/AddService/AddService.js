@@ -1,7 +1,7 @@
 import React from 'react'
 import './AddService.css'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -10,6 +10,7 @@ import 'react-tooltip/dist/react-tooltip.css'
  
 
 export default function AddService() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const formik = useFormik({
     initialValues: {
@@ -31,7 +32,10 @@ export default function AddService() {
           if (data.message === 0) {
             toast.error('Unsuccessful Added');
           }
-          else toast.success('Successful Added');
+          else {
+            toast.success('Successful Added');
+            navigate('/manageService');
+          }
         })
         .catch(err => console.log(err));
     },

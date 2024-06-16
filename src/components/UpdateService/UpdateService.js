@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import './UpdateStaff.css'
+import './UpdateService.css'
 import { useState } from 'react'
 import { useLocation, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -9,7 +9,7 @@ import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css'
 
 
-export default function UpdateStaff() {
+export default function UpdateService() {
   const [oldId, setOldId] = useState("");
   const location = useLocation();
   // eslint-disable-next-line
@@ -18,18 +18,17 @@ export default function UpdateStaff() {
     initialValues: {
       id: "",
       name: "",
-      phoneNumber: "",
-      role: "",
+      price: "",
       agree: false
     },
     onSubmit: (values) => {
       let isFetched = true;
-      fetch('http://localhost:5000/staffs/update', {
+      fetch('http://localhost:5000/services/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ oldId: Number(oldId), id: Number(values.id), name: values.name, phoneNumber: Number(values.phoneNumber), role: values.role }),
+        body: JSON.stringify({ oldId: Number(oldId), id: Number(values.id), name: values.name, price: Number(values.price) }),
       })
         .then(res => res.json())
         .then(data => {
@@ -48,10 +47,9 @@ export default function UpdateStaff() {
       }
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("Required.").min(1, "Please enter a valid id"),
+      id: Yup.string().required("Required."),
       name: Yup.string().required("Required.").min(2, "Must be 2 characters or more"),
-      phoneNumber: Yup.string().required("Required").min(10, "Please enter full number"),
-      role: Yup.string().required("Required").typeError("Please select a role."),
+      price: Yup.string().required("Required"),
       agree: Yup.boolean().oneOf([true], "The terms and conditions must be accepted.")
     }),
   });
@@ -77,15 +75,14 @@ export default function UpdateStaff() {
       setOldId(formik.values.id);
     }
     async function startFetching() {
-      await fetch(`http://localhost:5000/staffs/read/${oldId}`)
+      await fetch(`http://localhost:5000/services/read/${oldId}`)
         .then(res => res.json())
         .then(json => {
           if (isFetched) {
             formik.setValues({
               id: json.id,
               name: json.name,
-              phoneNumber: json.phoneNumber,
-              role: json.role,
+              price: json.price,
               agree: false
             })
           }
@@ -100,13 +97,13 @@ export default function UpdateStaff() {
 
   return (
     <>
-      <div className='updateStaff-component' >
+      <div className='updateService-component' >
         <div className='container' >
 
           {/* Heading */}
           <div className='row' >
-            <div className='col-3' ><Link className='back-button' to='/manageStaff' ><img src='assets/images/arrow-left.svg' alt='' /></Link></div>
-            <div className='col-9' ><h1>Update Staff</h1></div>
+            <div className='col-3' ><Link className='back-button' to='/manageService' ><img src='assets/images/arrow-left.svg' alt='' /></Link></div>
+            <div className='col-9' ><h1>Update Service</h1></div>
           </div>
 
           <div className='row ' >
@@ -145,35 +142,18 @@ export default function UpdateStaff() {
                 <Tooltip id='name-tooltip' isOpen={isOpen} imperativeModeOnly />
 
 
-                {/* Input Phone Number */}
+                {/* Input Price  */}
                 <div className='row mb-3' >
-                  <label >Phone Number</label>
+                  <label >Price</label>
                   <a
-                    data-tooltip-id="phoneNumber-tooltip"
-                    data-tooltip-content={formik.errors.phoneNumber}
+                    data-tooltip-id="price-tooltip"
+                    data-tooltip-content={formik.errors.price}
                     data-tooltip-variant="warning" data-tooltip-place="right"
                   >
-                    <input onChange={formik.handleChange} onKeyDown={handleKeyDown} type='text' maxLength={10} name='phoneNumber' value={formik.values.phoneNumber} />
+                    <input onChange={formik.handleChange} onKeyDown={handleKeyDown} type='text' name='price' value={formik.values.price} />
                   </a>
                 </div>
-                <Tooltip id='phoneNumber-tooltip' isOpen={isOpen} imperativeModeOnly />
-
-
-                {/* Choose Role */}
-                <div className='row mb-3' >
-                  <label>Choose role</label>
-                  <a
-                    data-tooltip-id="role-tooltip"
-                    data-tooltip-content={formik.errors.role}
-                    data-tooltip-variant="warning" data-tooltip-place="right"
-                  >
-                    <select class="form-select" name='role' value={formik.values.role} onChange={formik.handleChange} >
-                      <option value="Admin">Admin</option>
-                      <option value="Staff">Staff</option>
-                    </select>
-                  </a>
-                </div>
-                <Tooltip id='role-tooltip' isOpen={isOpen} imperativeModeOnly />
+                <Tooltip id='price-tooltip' isOpen={isOpen} imperativeModeOnly />
 
                 {/* Switch */}
                 <div className='row mb-3' >

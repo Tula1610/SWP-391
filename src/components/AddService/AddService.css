@@ -1,11 +1,21 @@
+/* Component */
+.addService-component {
+    margin-bottom: 30px;
+    animation: 1s ease-in-out component-motion;
+}
+
+@keyframes component-motion {
+    from { transform: translateX(-1300px); }
+    to {transform: translateX(0);}
+}
+
 .addService-component .container {
     background: rgb(185,114,74); 
-    background: linear-gradient(90deg, #B9724A, #B05F62, #945774, #6C5479, #46506E, #2F4858);
-    margin-bottom: 30px;
     border-radius: 20px;
     box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.15);
     padding-bottom: 10px;
     padding-top: 25px;
+    transition: .4s;
 }
 
 /* Heading */

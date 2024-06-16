@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './ManageService.css'
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, NavDropdown, DropdownButton, Dropdown, Row, Col } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 
 export default function ManageService() {
@@ -31,20 +31,20 @@ export default function ManageService() {
   // Delete one service from database by using service ID
   const deleteService = async () => {
     setShow(false);
-      await fetch(`http://localhost:5000/services/delete/${deleteId}`, {
-        method: 'DELETE',
+    await fetch(`http://localhost:5000/services/delete/${deleteId}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        fetchData();
+        toast.success('Successful deleted')
       })
-        .then(() => {
-          fetchData();
-          toast.success('Successful deleted')
-        })
-        .catch(err => console.log(err))
-    }
+      .catch(err => console.log(err))
+  }
 
   // Start fetching data
   useEffect(() => {
     let isFetched = true;
-    if( isFetched ) fetchData();
+    if (isFetched) fetchData();
     return () => {
       isFetched = false;
     }
@@ -79,31 +79,35 @@ export default function ManageService() {
                       <td>{service.id}</td>
                       <td>{service.name}</td>
                       <td>$ {service.price}</td>
-                      <td><Link className='update-button' to={`/update?${service.id}`} >UPDATE</Link> </td>
                       <td>
-                        <Button className='delete-button' onClick={() => handleShow(service.id)}>
-                          DELETE
-                        </Button>
+                        <Dropdown>
+                          <Dropdown.Toggle className='dropdown-toggle'  ></Dropdown.Toggle>
 
-                        <Modal show={show} onHide={handleClose}>
-                          <Modal.Header closeButton>
-                            <Modal.Title>Notification</Modal.Title>
-                          </Modal.Header>
-                          <Modal.Body>Are you sure?</Modal.Body>
-                          <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>
-                              Close
-                            </Button>
-                            <Button id='delete-button' onClick={() => deleteService()}>
-                              DELETE
-                            </Button>
-                          </Modal.Footer>
-                        </Modal>
+                          <Dropdown.Menu className='dropdown-menu' >
+                            <Dropdown.Item className='dropdown-item' ><Link className='update-button' to={`/updateService?${service.id}`} >UPDATE</Link></Dropdown.Item>
+                            <Dropdown.Item className='dropdown-item' ><a onClick={() => handleShow(service.id)} >DELETE</a></Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
                       </td>
+
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Notification</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure?</Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    Close
+                  </Button>
+                  <Button variant='danger' id='delete-button' onClick={() => deleteService()}>
+                    DELETE
+                  </Button>
+                </Modal.Footer>
+              </Modal>
 
               {/* Add Button */}
               <div className='add-button' >
