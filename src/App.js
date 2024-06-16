@@ -10,6 +10,7 @@ import SpinnerLoader from './components/SpinnerLoader/SpinnerLoader.js';
 import { useEffect, useState } from 'react';
 import {  Toaster } from 'react-hot-toast';
 import ManageService from './components/ManageService/ManageService.js';
+import AddService from './components/AddService/AddService.js';
 
 
 function App() {
@@ -35,7 +36,9 @@ function App() {
                 <Route path='/manageStaff' element={<ManageStaff />} />
                 <Route path='/addStaff' element={<AddStaff />} />
                 <Route path='/update' element={<UpdateStaff />} />
+
                 <Route path='/manageService' element={<ManageService />} />
+                <Route path='/addService' element={<AddService />} />
               </Routes>
               <Footer />
             </>
