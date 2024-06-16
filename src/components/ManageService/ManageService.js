@@ -25,7 +25,7 @@ export default function ManageService() {
       .catch(err => console.log(err))
   };
 
-  // Delete one service from backend by using service ID
+  /* // Delete one service from backend by using service ID
   const deleteService = () => {
     setShow(false);
     fetch(`http://localhost:5000/services/delete/${deleteId}`, {
@@ -36,7 +36,7 @@ export default function ManageService() {
         toast.success('Successful deleted')
       })
       .catch(err => console.log(err))
-  }
+  } */
 
   useEffect(() => {
     fetchData();
@@ -68,7 +68,7 @@ export default function ManageService() {
                     <tr key={service.id} >
                       <td>{service.id}</td>
                       <td>{service.name}</td>
-                      <td>{service.price}</td>
+                      <td>$ {service.price}</td>
                       <td><Link className='update-button' to={`/update?${service.id}`} >UPDATE</Link> </td>
                       <td>
                         <Button className='delete-button' onClick={() => handleShow(service.id)}>
