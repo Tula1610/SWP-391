@@ -9,38 +9,48 @@ export default function ManageService() {
   const [show, setShow] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
 
+  // Close modal of delete
   const handleClose = () => {
     setShow(false);
   };
+
+  // Show modal of delete
   const handleShow = (serviceId) => {
     setShow(true);
     setDeleteId(serviceId);
   };
 
   // Get all service from backend
-  const fetchData = () => {
-    fetch('http://localhost:5000/services/read')
+  const fetchData = async () => {
+    await fetch('http://localhost:5000/services/read')
       .then(res => res.json())
       .then(json => setServices(json))
       .catch(err => console.log(err))
   };
 
-  /* // Delete one service from backend by using service ID
-  const deleteService = () => {
+  // Delete one service from database by using service ID
+  const deleteService = async () => {
     setShow(false);
-    fetch(`http://localhost:5000/services/delete/${deleteId}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        fetchData();
-        toast.success('Successful deleted')
+      await fetch(`http://localhost:5000/services/delete/${deleteId}`, {
+        method: 'DELETE',
       })
-      .catch(err => console.log(err))
-  } */
+        .then(() => {
+          fetchData();
+          toast.success('Successful deleted')
+        })
+        .catch(err => console.log(err))
+    }
 
+  // Start fetching data
   useEffect(() => {
-    fetchData();
+    let isFetched = true;
+    if( isFetched ) fetchData();
+    return () => {
+      isFetched = false;
+    }
   }, [])
+
+
   return (
     <>
       <div className='manageService-component' >
