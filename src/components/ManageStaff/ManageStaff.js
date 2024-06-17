@@ -18,7 +18,7 @@ export default function ManageStaff() {
   };
 
   // Get all staff from backend
-  const fetchData = () => {
+  const fetchData = async () => {
     fetch('http://localhost:5000/staffs/read')
       .then(res => res.json())
       .then(json => setStaffs(json))
@@ -41,6 +41,8 @@ export default function ManageStaff() {
   useEffect(() => {
     fetchData();
   }, [])
+
+  
   return (
     <>
       <div className='manageStaff-component' >

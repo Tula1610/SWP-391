@@ -3,13 +3,12 @@ import './App.css';
 import Footer from './components/Footer/Footer.js';
 import Header from './components/Header/Header';
 import Home from './components/Home/Home';
-import ManageStaff from './components/ManageStaff/ManageStaff';
-import AddStaff from './components/AddStaff/AddStaff';
-import UpdateStaff from './components/UpdateStaff/UpdateStaff';
 import SpinnerLoader from './components/SpinnerLoader/SpinnerLoader.js';
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import {  Toaster } from 'react-hot-toast';
+import BookingSpa from './components/BookingSpa/BookingSpa.js';
 
+//const Home = lazy(() => delayfo)
 
 function App() {
   const [spinnerLoader, setSpinnerLoader] = useState(true);
@@ -26,13 +25,11 @@ function App() {
         {
           spinnerLoader ? (< SpinnerLoader />) : (
             <>
-              <Toaster position='bottom-right' />
+              <Toaster position='top-right' />
               < Header />
               <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/manageStaff' element={<ManageStaff />} />
-                <Route path='/addStaff' element={<AddStaff />} />
-                <Route path='/update' element={<UpdateStaff />} />
+                <Route path='/bookingSpa' element={<BookingSpa/>} />
               </Routes>
               <Footer />
             </>
@@ -42,5 +39,9 @@ function App() {
     </>
   );
 }
+
+// function loading(promise) {
+//   return new Promise()
+// }
 
 export default App;
