@@ -21,7 +21,15 @@ const bookingSchema = new Schema({
     date: {
         type: Date,
         required: true 
-    }
+    },
+    services: {
+        type: Array,
+        required: true 
+    },
+    combo: {
+        type: String,
+        required: true 
+    },
 }, { timestamps: true });
 
 const Booking = mongoose.model('Booking', bookingSchema);

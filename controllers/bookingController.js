@@ -12,12 +12,14 @@ const createBooking = async (req, res) => {
     petName: req.body.petName,
     petType: req.body.petType,
     date: req.body.date,
+    services: req.body.services,
+    combo: req.body.combo,
   });
 
   await newBooking
     .save()
-    .then((result) => {
-      res.send(result);
+    .then(() => {
+      res.json({ message: 1 });
     })
     .catch((err) => console.log(err));
 };

@@ -5,8 +5,10 @@ const router = express.Router();
 
 // Manage Combo Route
 router.get('/', comboController.indexCombo);
-router.get('/create', comboController.createCombo);
-//router.get('/read', comboController);
+router.post('/create', comboController.createCombo);
+router.get('/read', comboController.readAllCombo);
+router.get('/read/:id', comboController.readAllServiceOfCombo);
+router.delete('/delete/:id', comboController.deleteOneCombo);
 
 
 module.exports = router;
