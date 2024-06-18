@@ -1,50 +1,55 @@
-import React from 'react'
-import './AddStaff.css'
+import React, { useEffect } from 'react'
+import './UpdateService.css'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css'
- 
 
-export default function AddStaff() {
-  const navigate = useNavigate();
+
+export default function UpdateService() {
+  const [oldId, setOldId] = useState("");
+  const location = useLocation();
+  // eslint-disable-next-line
   const [isOpen, setIsOpen] = useState(true);
   const formik = useFormik({
     initialValues: {
       id: "",
       name: "",
-      phoneNumber: "",
-      role: "",
+      price: "",
       agree: false
     },
     onSubmit: (values) => {
-      fetch('http://localhost:5000/staffs/create', {
+      let isFetched = true;
+      fetch('http://localhost:5000/services/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: Number(values.id), name: values.name, phoneNumber: Number(values.phoneNumber), role: values.role }),
+        body: JSON.stringify({ oldId: Number(oldId), id: Number(values.id), name: values.name, price: Number(values.price) }),
       })
         .then(res => res.json())
         .then(data => {
-          if (data.message === 0) {
-            toast.error('Unsuccessful Added');
-          }
-          else {
-            toast.success('Successful Added');
-            navigate("/manageStaff");
+          if (isFetched) {
+            if (data.message === 0) toast.error('Unsuccessful Updated');
+            else {
+              toast.success('Successful Updated');
+              setOldId(data.id);
+            }
           }
         })
         .catch(err => console.log(err));
+
+      return () => {
+        isFetched = false;
+      }
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("Required.").min(1, "Please enter a valid id"),
+      id: Yup.string().required("Required."),
       name: Yup.string().required("Required.").min(2, "Must be 2 characters or more"),
-      phoneNumber: Yup.string().required("Required").min(10, "Please enter full number"),
-      role: Yup.string().required("Required").typeError("Please select a role."),
+      price: Yup.string().required("Required"),
       agree: Yup.boolean().oneOf([true], "The terms and conditions must be accepted.")
     }),
   });
@@ -58,23 +63,52 @@ export default function AddStaff() {
     }
   };
 
+  useEffect(() => {
+    let isFetched = true;
+    const passedId = location.search.substring(1);
+
+    if ( oldId === "") {
+      setOldId(passedId);
+      formik.setValues({ id: passedId });
+    }
+    else {
+      setOldId(formik.values.id);
+    }
+    async function startFetching() {
+      await fetch(`http://localhost:5000/services/read/${oldId}`)
+        .then(res => res.json())
+        .then(json => {
+          if (isFetched) {
+            formik.setValues({
+              id: json.id,
+              name: json.name,
+              price: json.price,
+              agree: false
+            })
+          }
+        })
+        .catch(err => console.log(err));
+    }
+    startFetching();
+    return () => {
+      isFetched = false
+    }
+  }, [oldId])
+
   return (
     <>
-      <div className='addStaff-component' >
+      <div className='updateService-component' >
         <div className='container' >
 
           {/* Heading */}
           <div className='row' >
-            <div className='col-3' ><Link className='back-button' to='/manageStaff' ><img src='assets/images/arrow-left.svg' alt='' /></Link></div>
-            <div className='col-9' >
-              <h1>Add New Staff</h1>
-              <div className='heading-motion' ></div>
-            </div>
+            <div className='col-3' ><Link className='back-button' to='/manageService' ><img src='assets/images/arrow-left.svg' alt='' /></Link></div>
+            <div className='col-9' ><h1>Update Service</h1></div>
           </div>
 
           <div className='row ' >
             {/* Gif */}
-            <div className='col-4 test' ><img src='assets/images/gif-5.gif' alt='' /></div>
+            <div className='col-4' ><img src='assets/images/gif-1.gif' alt='' /></div>
 
             {/* Form */}
             <div className='col-4' >
@@ -93,6 +127,7 @@ export default function AddStaff() {
                 </div>
                 <Tooltip id='id-tooltip' isOpen={isOpen} imperativeModeOnly />
 
+
                 {/* Input Name */}
                 <div className='row mb-3' >
                   <label >Name</label>
@@ -106,34 +141,19 @@ export default function AddStaff() {
                 </div>
                 <Tooltip id='name-tooltip' isOpen={isOpen} imperativeModeOnly />
 
-                {/* Input Phone Number */}
-                <div className='row mb-3' >
-                  <label >Phone Number</label>
-                  <a
-                    data-tooltip-id="phoneNumber-tooltip"
-                    data-tooltip-content={formik.errors.phoneNumber}
-                    data-tooltip-variant="warning" data-tooltip-place="right"
-                  >
-                    <input onChange={formik.handleChange} onKeyDown={handleKeyDown} type='text' maxLength={10} name='phoneNumber' value={formik.values.phoneNumber} />
-                  </a>
-                </div>
-                <Tooltip id='phoneNumber-tooltip' isOpen={isOpen} imperativeModeOnly />
 
-                {/* Choose Role */}
+                {/* Input Price  */}
                 <div className='row mb-3' >
-                  <label>Choose role</label>
+                  <label >Price</label>
                   <a
-                    data-tooltip-id="role-tooltip"
-                    data-tooltip-content={formik.errors.role}
+                    data-tooltip-id="price-tooltip"
+                    data-tooltip-content={formik.errors.price}
                     data-tooltip-variant="warning" data-tooltip-place="right"
                   >
-                    <select class="form-select" name='role' value={formik.values.role} onChange={formik.handleChange} >
-                      <option value="Admin">Admin</option>
-                      <option value="Staff">Staff</option>
-                    </select>
+                    <input onChange={formik.handleChange} onKeyDown={handleKeyDown} type='text' name='price' value={formik.values.price} />
                   </a>
                 </div>
-                <Tooltip id='role-tooltip' isOpen={isOpen} imperativeModeOnly />
+                <Tooltip id='price-tooltip' isOpen={isOpen} imperativeModeOnly />
 
                 {/* Switch */}
                 <div className='row mb-3' >
@@ -154,11 +174,12 @@ export default function AddStaff() {
                 <div className='submit-button' >
                   <button type='submit' >SUBMIT</button>
                 </div>
+
               </form>
             </div>
 
             {/* Gif */}
-            <div className='col-4' ><img src='assets/images/gif-4.gif' alt='' /></div>
+            <div className='col-4' ><img src='assets/images/gif-5.gif' alt='' /></div>
           </div>
 
         </div>

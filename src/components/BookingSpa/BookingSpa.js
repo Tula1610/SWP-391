@@ -12,7 +12,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function BookingSpa() {
-  const [services, setServices] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
 
   const formik = useFormik({
@@ -22,6 +21,8 @@ export default function BookingSpa() {
       petName: "",
       petType: "",
       date: new Date(),
+      services: [],
+      combos: [],
       agree: false,
     },
     onSubmit: (values) => {
@@ -55,6 +56,12 @@ export default function BookingSpa() {
       petType: Yup.string()
         .required("Required")
         .typeError("Please select a pet type."),
+      services: Yup.string()
+        .required("Required")
+        .typeError("Please select a service."),
+      combos: Yup.string()
+        .required("Required")
+        .typeError("Please select a combo."),
       date: Yup.date().required("Required"),
       agree: Yup.boolean().oneOf(
         [true],
@@ -84,7 +91,9 @@ export default function BookingSpa() {
     await fetch("http://localhost:5000/services/read")
       .then((res) => res.json())
       .then((json) => {
-        setServices(json);
+        if (isFetched) {
+          formik.setValues({ services: json });
+        }
       })
       .catch((err) => console.log(err));
 
@@ -93,14 +102,31 @@ export default function BookingSpa() {
     };
   };
 
+  // Read all combo
+  /* const readAllCombo = async () => {
+    let isFetched = true;
+    await fetch("http://localhost:5000/combos/read")
+      .then((res) => res.json())
+      .then((json) => {
+        if (isFetched) {
+          formik.setValues({ combos: json });
+        }
+      })
+      .catch((err) => console.log(err));
+
+    return () => {
+      isFetched = false;
+    };
+  }; */
+
   useEffect(() => {
     readAllService();
+    //readAllCombo();
   }, []);
 
   return (
     <>
       <div className="bookingSpa-component">
-        <ToastContainer />
         <div className="container">
           {/* Heading */}
           <div className="row">
@@ -251,18 +277,45 @@ export default function BookingSpa() {
                     data-tooltip-content="Please select a service"
                     data-tooltip-variant="warning"
                     data-tooltip-place="right"
-                  ></a>
-                  {services.map((index) => {
-                    <div key={index.id}>
-                      <div>service</div>
-                    </div>
-                  })}
+                  >
+                    <select class="form-select">
+                      {formik.values.services.map((option, index) => (
+                        <option key={index} value={option.name}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </a>
                 </div>
                 <Tooltip
                   id="service-tooltip"
                   isOpen={isOpen}
                   imperativeModeOnly
                 />
+
+               {/*  Choose Combo
+                <div className="row mb-3">
+                  <label>Choose Combo</label>
+                  <a
+                    data-tooltip-id="combo-tooltip"
+                    data-tooltip-content="Please select a Combo"
+                    data-tooltip-variant="warning"
+                    data-tooltip-place="right"
+                  >
+                    <select class="form-select">
+                      {formik.values.combos.map((option, index) => (
+                        <option key={index} value={option.name}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </a>
+                </div>
+                <Tooltip
+                  id="combo-tooltip"
+                  isOpen={isOpen}
+                  imperativeModeOnly
+                /> */}
 
                 {/* Switch */}
                 <div className="row mb-3">

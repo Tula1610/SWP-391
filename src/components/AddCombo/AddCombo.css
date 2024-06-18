@@ -1,5 +1,5 @@
 /* Component */
-.addStaff-component {
+.addCombo-component {
     margin-bottom: 30px;
     animation: 1s ease-in-out component-motion;
 }
@@ -9,7 +9,7 @@
     to {transform: translateX(0);}
 }
 
-.addStaff-component .container {
+.addCombo-component .container {
     background: rgb(185,114,74); 
     border-radius: 20px;
     box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.15);
@@ -18,7 +18,7 @@
 }
 
 /* Heading */
-.addStaff-component h1 {
+.addCombo-component h1 {
     color: white;
     font-weight: 500;
     padding-bottom: 15px;
@@ -27,7 +27,7 @@
 }
 
 /* Heading Motion */
-.addStaff-component .heading-motion {
+.addCombo-component .heading-motion {
     width: 20px;
     height: 20px;
     background-color: rgb(0, 201, 170);
@@ -45,13 +45,13 @@
 }
 
 /* Back Button */
-.addStaff-component .row .back-button img {
+.addCombo-component .row .back-button img {
     width: 50px;
     margin-left: 50px;
 }
 
 /* GIF */
-.addStaff-component .col-4 img {
+.addCombo-component .col-4 img {
     width: 190px;
     margin-left: 120px;
     margin-top: 20px;
@@ -61,7 +61,7 @@
 
 
 /* Input */
-.addStaff-component .col-4 .row input, .addStaff-component .col-4 .row select {
+.addCombo-component .col-4 .row input, .addCombo-component .col-4 .row select {
     background-color: rgba(255, 255, 255, 0.85);
     width: 100%;
     padding: 10px 20px;
@@ -69,11 +69,11 @@
     border: none;
     box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.15);
 }
-.addStaff-component .col-4 .row input:hover {
+.addCombo-component .col-4 .row input:hover {
     background-color: rgba(255, 255, 255, 0.75);
 }
 
-.addStaff-component .col-4 .row label {
+.addCombo-component .col-4 .row label {
     color: white;
     font-weight: 500;
     font-size: 1.1rem;
@@ -82,7 +82,7 @@
 
 
 /* Switch Input */
-.addStaff-component .col-4 .row .form-check-input {
+.addCombo-component .col-4 .row .form-check-input {
     background-color: white;
     width: 15%;
     margin-right: 20px;
@@ -90,19 +90,19 @@
     cursor: pointer;
     transition: .4s;
 }
-.addStaff-component .col-4 .row .form-check-input:checked {
+.addCombo-component .col-4 .row .form-check-input:checked {
     background-color: rgb(0, 201, 170);
 }
 
 
 /* Submit Button */
-.addStaff-component .submit-button {
+.addCombo-component .submit-button {
     text-align: center;
     margin-top: 15px;
     margin-bottom: 15px;
 }
 
-.addStaff-component .submit-button button {
+.addCombo-component .submit-button button {
     background-color: rgb(0, 201, 170);
     color: white;
     font-weight: 500;
@@ -112,16 +112,16 @@
     border: none;
     transition: .2s;
 }
-.addStaff-component .submit-button button:hover {
+.addCombo-component .submit-button button:hover {
     background-color: white;
     color: rgb(0, 201, 170);
     box-shadow: 7px 7px 10px rgb(0, 0, 0, 0.3);
 }
-.addStaff-component .submit-button button:active {
+.addCombo-component .submit-button button:active {
     opacity: .7;
 }
 
-.addStaff-component .notification {
+.addCombo-component .notification {
     color: white;
     font-weight: 500;
     font-size: 1.5rem;

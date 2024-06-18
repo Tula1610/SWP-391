@@ -1,5 +1,5 @@
 import React from 'react'
-import './AddStaff.css'
+import './AddService.css'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast';
@@ -9,24 +9,23 @@ import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css'
  
 
-export default function AddStaff() {
+export default function AddService() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const formik = useFormik({
     initialValues: {
       id: "",
       name: "",
-      phoneNumber: "",
-      role: "",
+      price: "",
       agree: false
     },
     onSubmit: (values) => {
-      fetch('http://localhost:5000/staffs/create', {
+      fetch('http://localhost:5000/services/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: Number(values.id), name: values.name, phoneNumber: Number(values.phoneNumber), role: values.role }),
+        body: JSON.stringify({ id: Number(values.id), name: values.name, price: Number(values.price) }),
       })
         .then(res => res.json())
         .then(data => {
@@ -35,7 +34,7 @@ export default function AddStaff() {
           }
           else {
             toast.success('Successful Added');
-            navigate("/manageStaff");
+            navigate('/manageService');
           }
         })
         .catch(err => console.log(err));
@@ -43,8 +42,7 @@ export default function AddStaff() {
     validationSchema: Yup.object({
       id: Yup.string().required("Required.").min(1, "Please enter a valid id"),
       name: Yup.string().required("Required.").min(2, "Must be 2 characters or more"),
-      phoneNumber: Yup.string().required("Required").min(10, "Please enter full number"),
-      role: Yup.string().required("Required").typeError("Please select a role."),
+      price: Yup.string().required("Required").min(1, "Please enter a valid price"),
       agree: Yup.boolean().oneOf([true], "The terms and conditions must be accepted.")
     }),
   });
@@ -60,14 +58,14 @@ export default function AddStaff() {
 
   return (
     <>
-      <div className='addStaff-component' >
+      <div className='addService-component' >
         <div className='container' >
 
           {/* Heading */}
           <div className='row' >
-            <div className='col-3' ><Link className='back-button' to='/manageStaff' ><img src='assets/images/arrow-left.svg' alt='' /></Link></div>
+            <div className='col-3' ><Link className='back-button' to='/manageService' ><img src='assets/images/arrow-left.svg' alt='' /></Link></div>
             <div className='col-9' >
-              <h1>Add New Staff</h1>
+              <h1>Add New Service</h1>
               <div className='heading-motion' ></div>
             </div>
           </div>
@@ -106,34 +104,18 @@ export default function AddStaff() {
                 </div>
                 <Tooltip id='name-tooltip' isOpen={isOpen} imperativeModeOnly />
 
-                {/* Input Phone Number */}
+                {/* Input Price */}
                 <div className='row mb-3' >
-                  <label >Phone Number</label>
+                  <label >Price</label>
                   <a
-                    data-tooltip-id="phoneNumber-tooltip"
-                    data-tooltip-content={formik.errors.phoneNumber}
+                    data-tooltip-id="price-tooltip"
+                    data-tooltip-content={formik.errors.price}
                     data-tooltip-variant="warning" data-tooltip-place="right"
                   >
-                    <input onChange={formik.handleChange} onKeyDown={handleKeyDown} type='text' maxLength={10} name='phoneNumber' value={formik.values.phoneNumber} />
+                    <input onChange={formik.handleChange} onKeyDown={handleKeyDown} type='text' name='price' value={formik.values.price} />
                   </a>
                 </div>
-                <Tooltip id='phoneNumber-tooltip' isOpen={isOpen} imperativeModeOnly />
-
-                {/* Choose Role */}
-                <div className='row mb-3' >
-                  <label>Choose role</label>
-                  <a
-                    data-tooltip-id="role-tooltip"
-                    data-tooltip-content={formik.errors.role}
-                    data-tooltip-variant="warning" data-tooltip-place="right"
-                  >
-                    <select class="form-select" name='role' value={formik.values.role} onChange={formik.handleChange} >
-                      <option value="Admin">Admin</option>
-                      <option value="Staff">Staff</option>
-                    </select>
-                  </a>
-                </div>
-                <Tooltip id='role-tooltip' isOpen={isOpen} imperativeModeOnly />
+                <Tooltip id='price-tooltip' isOpen={isOpen} imperativeModeOnly />
 
                 {/* Switch */}
                 <div className='row mb-3' >

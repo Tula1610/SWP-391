@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './ManageStaff.css'
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Dropdown } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 
 export default function ManageStaff() {
@@ -18,7 +18,7 @@ export default function ManageStaff() {
   };
 
   // Get all staff from backend
-  const fetchData = async () => {
+  const fetchData = () => {
     fetch('http://localhost:5000/staffs/read')
       .then(res => res.json())
       .then(json => setStaffs(json))
@@ -41,8 +41,6 @@ export default function ManageStaff() {
   useEffect(() => {
     fetchData();
   }, [])
-
-  
   return (
     <>
       <div className='manageStaff-component' >
@@ -73,31 +71,35 @@ export default function ManageStaff() {
                       <td>{staff.name}</td>
                       <td>{staff.phoneNumber}</td>
                       <td>{staff.role}</td>
-                      <td><Link className='update-button' to={`/update?${staff.id}`} >UPDATE</Link> </td>
                       <td>
-                        <Button className='delete-button' onClick={() => handleShow(staff.id)}>
-                          DELETE
-                        </Button>
+                        <Dropdown>
+                          <Dropdown.Toggle className='dropdown-toggle'  ></Dropdown.Toggle>
 
-                        <Modal show={show} onHide={handleClose}>
-                          <Modal.Header closeButton>
-                            <Modal.Title>Notification</Modal.Title>
-                          </Modal.Header>
-                          <Modal.Body>Are you sure?</Modal.Body>
-                          <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>
-                              Close
-                            </Button>
-                            <Button variant='danger' id='delete-button' onClick={() => deleteStaff()}>
-                              DELETE
-                            </Button>
-                          </Modal.Footer>
-                        </Modal>
+                          <Dropdown.Menu className='dropdown-menu' >
+                            <Dropdown.Item className='dropdown-item' ><Link className='update-button' to={`/updateStaff?${staff.id}`} >UPDATE</Link></Dropdown.Item>
+                            <Dropdown.Item className='dropdown-item' ><a onClick={() => handleShow(staff.id)} >DELETE</a></Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Notification</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure?</Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    Close
+                  </Button>
+                  <Button variant='danger' id='delete-button' onClick={() => deleteStaff()}>
+                    DELETE
+                  </Button>
+                </Modal.Footer>
+              </Modal>
 
               {/* Add Button */}
               <div className='add-button' >
@@ -110,5 +112,3 @@ export default function ManageStaff() {
     </>
   )
 }
-
-
