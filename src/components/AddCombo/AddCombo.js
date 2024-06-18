@@ -1,168 +1,281 @@
-import React from 'react'
-import './AddCombo.css'
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import { Tooltip } from 'react-tooltip';
-import 'react-tooltip/dist/react-tooltip.css'
- 
+import React from "react";
+import "./AddCombo.css";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 
 export default function AddCombo() {
   const navigate = useNavigate();
+  const [services, setServices] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
   const formik = useFormik({
     initialValues: {
-      id: "",
+      comboId: "",
       name: "",
-      phoneNumber: "",
-      role: "",
-      agree: false
+      price: "",
+      serviceId: [],
+      agree: false,
     },
     onSubmit: (values) => {
-      fetch('http://localhost:5000/combos/create', {
-        method: 'POST',
+       fetch("http://localhost:5000/combos/create", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: Number(values.id), name: values.name, phoneNumber: Number(values.phoneNumber), role: values.role }),
+        body: JSON.stringify({
+          comboId: Number(values.comboId),
+          name: values.name,
+          price: Number(values.price),
+          serviceId: values.serviceId
+        }),
       })
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           if (data.message === 0) {
-            toast.error('Unsuccessful Added');
-          }
-          else {
-            toast.success('Successful Added');
+            toast.error("Add Unsuccessfully");
+          } else {
+            toast.success("Add Successfully");
             navigate("/manageCombo");
           }
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("Required.").min(1, "Please enter a valid id"),
-      name: Yup.string().required("Required.").min(2, "Must be 2 characters or more"),
-      phoneNumber: Yup.string().required("Required").min(10, "Please enter full number"),
-      role: Yup.string().required("Required").typeError("Please select a role."),
-      agree: Yup.boolean().oneOf([true], "The terms and conditions must be accepted.")
+      comboId: Yup.string().required("Required."),
+      name: Yup.string()
+        .required("Required.")
+        .min(2, "Must be 2 characters or more"),
+      price: Yup.string().required("Required"),
+      agree: Yup.boolean().oneOf(
+        [true],
+        "The terms and conditions must be accepted."
+      ),
     }),
   });
 
   const handleKeyDown = (e) => {
     // Allow only numeric keys, backspace, and delete
-    const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    const allowedKeys = [
+      "Backspace",
+      "Delete",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+    ];
 
     if (!/\d/.test(e.key) && !allowedKeys.includes(e.key)) {
       e.preventDefault();
     }
   };
 
+  //Read all service
+  const readAllService = async () => {
+    let isFetched = true;
+    await fetch("http://localhost:5000/services/read")
+      .then((res) => res.json())
+      .then((json) => {
+        if (isFetched) {
+          setServices(json);
+        }
+      })
+      .catch((err) => console.log(err));
+
+    return () => {
+      isFetched = false;
+    };
+  };
+
+  useEffect(() => {
+    let isFetched = true;
+    if (isFetched) readAllService();
+    return () => {
+      isFetched = false;
+    };
+  }, []);
+
+  const handleChangeServices = async (e) => {
+    if (e.target.checked === true) {
+      formik.values.serviceId.splice(e.target.value, 0, e.target.value);
+    }
+    else {
+      formik.values.serviceId.sort();
+      const foundServiceId = formik.values.serviceId.find((value) => {
+        return e.target.value == value;
+      });
+      if(foundServiceId) {
+        formik.values.serviceId.splice(formik.values.serviceId.indexOf(foundServiceId), 1);
+      }
+    }
+  };
+
   return (
     <>
-      <div className='addCombo-component' >
-        <div className='container' >
-
+      <div className="addCombo-component">
+        <div className="container">
           {/* Heading */}
-          <div className='row' >
-            <div className='col-3' ><Link className='back-button' to='/manageCombo' ><img src='assets/images/arrow-left.svg' alt='' /></Link></div>
-            <div className='col-9' >
+          <div className="row">
+            <div className="col-3">
+              <Link className="back-button" to="/manageCombo">
+                <img src="assets/images/arrow-left.svg" alt="" />
+              </Link>
+            </div>
+            <div className="col-9">
               <h1>Add New Combo</h1>
-              <div className='heading-motion' ></div>
+              <div className="heading-motion"></div>
             </div>
           </div>
 
-          <div className='row ' >
+          <div className="row ">
             {/* Gif */}
-            <div className='col-4 test' ><img src='assets/images/gif-5.gif' alt='' /></div>
+            <div className="col-4 test">
+              <img src="assets/images/gif-5.gif" alt="" />
+            </div>
 
             {/* Form */}
-            <div className='col-4' >
-              <form onSubmit={formik.handleSubmit} >
-
+            <div className="col-4">
+              <form onSubmit={formik.handleSubmit}>
                 {/* Input ID */}
-                <div className='row mb-3' >
-                  <label >ID</label>
+                <div className="row mb-3">
+                  <label>Combo ID</label>
                   <a
-                    data-tooltip-id="id-tooltip"
-                    data-tooltip-content={formik.errors.id}
-                    data-tooltip-variant="warning" data-tooltip-place="right"
+                    data-tooltip-id="comboId-tooltip"
+                    data-tooltip-content={formik.errors.comboId}
+                    data-tooltip-variant="warning"
+                    data-tooltip-place="right"
                   >
-                    <input onChange={formik.handleChange} onKeyDown={handleKeyDown} type='text' name='id' value={formik.values.id} />
+                    <input
+                      onChange={formik.handleChange}
+                      onKeyDown={handleKeyDown}
+                      type="text"
+                      name="comboId"
+                      value={formik.values.comboId}
+                    />
                   </a>
                 </div>
-                <Tooltip id='id-tooltip' isOpen={isOpen} imperativeModeOnly />
+                <Tooltip
+                  id="comboId-tooltip"
+                  isOpen={isOpen}
+                  imperativeModeOnly
+                />
 
                 {/* Input Name */}
-                <div className='row mb-3' >
-                  <label >Name</label>
+                <div className="row mb-3">
+                  <label>Name</label>
                   <a
                     data-tooltip-id="name-tooltip"
                     data-tooltip-content={formik.errors.name}
-                    data-tooltip-variant="warning" data-tooltip-place="right"
+                    data-tooltip-variant="warning"
+                    data-tooltip-place="right"
                   >
-                    <input onChange={formik.handleChange} type='text' name='name' value={formik.values.name} />
+                    <input
+                      onChange={formik.handleChange}
+                      type="text"
+                      name="name"
+                      value={formik.values.name}
+                    />
                   </a>
                 </div>
-                <Tooltip id='name-tooltip' isOpen={isOpen} imperativeModeOnly />
+                <Tooltip id="name-tooltip" isOpen={isOpen} imperativeModeOnly />
 
-                {/* Input Phone Number */}
-                <div className='row mb-3' >
-                  <label >Phone Number</label>
+                {/* Input Price */}
+                <div className="row mb-3">
+                  <label>Price</label>
                   <a
-                    data-tooltip-id="phoneNumber-tooltip"
-                    data-tooltip-content={formik.errors.phoneNumber}
-                    data-tooltip-variant="warning" data-tooltip-place="right"
+                    data-tooltip-id="price-tooltip"
+                    data-tooltip-content={formik.errors.price}
+                    data-tooltip-variant="warning"
+                    data-tooltip-place="right"
                   >
-                    <input onChange={formik.handleChange} onKeyDown={handleKeyDown} type='text' maxLength={10} name='phoneNumber' value={formik.values.phoneNumber} />
+                    <input
+                      onChange={formik.handleChange}
+                      onKeyDown={handleKeyDown}
+                      type="text"
+                      name="price"
+                      value={formik.values.price}
+                    />
                   </a>
                 </div>
-                <Tooltip id='phoneNumber-tooltip' isOpen={isOpen} imperativeModeOnly />
+                <Tooltip
+                  id="price-tooltip"
+                  isOpen={isOpen}
+                  imperativeModeOnly
+                />
 
-                {/* Choose Role */}
-                <div className='row mb-3' >
-                  <label>Choose role</label>
+                {/* Choose Service */}
+                <div className="row mb-3">
+                  <label>Choose Service</label>
                   <a
-                    data-tooltip-id="role-tooltip"
-                    data-tooltip-content={formik.errors.role}
-                    data-tooltip-variant="warning" data-tooltip-place="right"
+                    data-tooltip-id="services-tooltip"
+                    data-tooltip-content="Require"
+                    data-tooltip-variant="warning"
+                    data-tooltip-place="right"
                   >
-                    <select class="form-select" name='role' value={formik.values.role} onChange={formik.handleChange} >
-                      <option value="Admin">Admin</option>
-                      <option value="Staff">Staff</option>
-                    </select>
+                    {services.map((option) => (
+                      <div class="form-check" key={option.id}>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          onChange={(e) => handleChangeServices(e)}
+                          value={option.id}
+                        />
+                        <label class="form-check-label">{option.name}</label>
+                      </div>
+                    ))}
                   </a>
                 </div>
-                <Tooltip id='role-tooltip' isOpen={isOpen} imperativeModeOnly />
+                <Tooltip
+                  id="services-tooltip"
+                  isOpen={isOpen}
+                  imperativeModeOnly
+                />
 
                 {/* Switch */}
-                <div className='row mb-3' >
+                <div className="row mb-3">
                   <a
                     data-tooltip-id="agree-tooltip"
                     data-tooltip-content={formik.errors.agree}
-                    data-tooltip-variant="warning" data-tooltip-place="right"
+                    data-tooltip-variant="warning"
+                    data-tooltip-place="right"
                   >
                     <div class="form-check form-switch">
-                      <input class="form-check-input" name='agree' type="checkbox" id="switch" value={formik.values.agree} onChange={formik.handleChange} />
-                      <label class="form-check-label" for="switch">Check this button to submit</label>
+                      <input
+                        class="form-check-input"
+                        name="agree"
+                        type="checkbox"
+                        id="switch"
+                        value={formik.values.agree}
+                        onChange={formik.handleChange}
+                      />
+                      <label class="form-check-label" for="switch">
+                        Check this button to submit
+                      </label>
                     </div>
                   </a>
                 </div>
-                <Tooltip id='agree-tooltip' isOpen={isOpen} imperativeModeOnly />
+                <Tooltip
+                  id="agree-tooltip"
+                  isOpen={isOpen}
+                  imperativeModeOnly
+                />
 
                 {/* Submit Button */}
-                <div className='submit-button' >
-                  <button type='submit' >SUBMIT</button>
+                <div className="submit-button">
+                  <button type="submit">SUBMIT</button>
                 </div>
               </form>
             </div>
 
             {/* Gif */}
-            <div className='col-4' ><img src='assets/images/gif-4.gif' alt='' /></div>
+            <div className="col-4">
+              <img src="assets/images/gif-4.gif" alt="" />
+            </div>
           </div>
-
         </div>
       </div>
     </>
-  )
+  );
 }

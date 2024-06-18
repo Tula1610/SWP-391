@@ -1,45 +1,84 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import './ManageCombo.css'
-import { Modal, Button, NavDropdown, DropdownButton, Dropdown, Row, Col } from 'react-bootstrap';
-import toast from 'react-hot-toast';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "./ManageCombo.css";
+import {
+  Modal,
+  Button,
+  NavDropdown,
+  DropdownButton,
+  Dropdown,
+  Row,
+  Col,
+  Table,
+} from "react-bootstrap";
+import toast from "react-hot-toast";
 
 export default function ManageCombo() {
   const [combos, setCombos] = useState([]);
-  const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
+  const [showDetail, setShowDetail] = useState(false);
+  const [comboId, setComboId] = useState();
+  const [listServicesOfCombo ,setListServicesOfCombo] = useState([]);
 
-  // Close modal of delete
+  // Close modal
   const handleClose = () => {
-    setShow(false);
+    setShowDelete(false);
+    setShowDetail(false);
   };
 
-  // Show modal of delete
-  const handleShow = (comboId) => {
-    setShow(true);
-    setDeleteId(comboId);
+  // Show modal
+  const handleShow = (comboId, nameButton) => {
+    if (nameButton === "delete") {
+      setDeleteId(comboId);
+      setShowDelete(true);
+    } else if (nameButton === "detail") {
+      setComboId(comboId);
+      readAllServiceByComboId();
+      setShowDetail(true);
+    }
   };
 
   // Get all combo from database
   const fetchData = async () => {
-    await fetch('http://localhost:5000/combos/read')
-      .then(res => res.json())
-      .then(json => setCombos(json))
-      .catch(err => console.log(err))
+    await fetch("http://localhost:5000/combos/read")
+      .then((res) => res.json())
+      .then((json) => setCombos(json))
+      .catch((err) => console.log(err));
   };
 
   // Delete one combo from database by combo ID
   const deleteCombo = async () => {
-    setShow(false);
+    let isFetched = true;
+    setShowDelete(false);
     await fetch(`http://localhost:5000/combos/delete/${deleteId}`, {
-      method: 'DELETE',
+      method: "DELETE",
     })
       .then(() => {
-        fetchData();
-        toast.success('Successful deleted')
+        if (isFetched) {
+          fetchData();
+          toast.success("Delete Successfully");
+        }
       })
-      .catch(err => console.log(err))
-  }
+      .catch((err) => console.log(err));
+
+    return () => (isFetched = false);
+  };
+
+  // Read all service of selected combo
+  const readAllServiceByComboId = async () => {
+    let isFetched = true;
+    await fetch(`http://localhost:5000/combos/read/${comboId}`)
+      .then(res => res.json())
+      .then((json) => {
+        if (isFetched) {
+          setListServicesOfCombo(json);
+        }
+      })
+      .catch((err) => console.log(err));
+
+    return () => (isFetched = false);
+  };
 
   // Start fetching data
   useEffect(() => {
@@ -47,22 +86,27 @@ export default function ManageCombo() {
     if (isFetched) fetchData();
     return () => {
       isFetched = false;
-    }
-  }, [])
-
+    };
+  }, []);
 
   return (
     <>
-      <div className='manageCombo-component' >
-        <div className='container-fluid' >
-          <div className='container' >
-            <div className='table' >
-              <div className='row' >
-                <div className='col-10' >
-                  <div className='table-heading-left' ><h1>Combo List</h1></div>
+      <div className="manageCombo-component">
+        <div className="container-fluid">
+          <div className="container">
+            <div className="table">
+              <div className="row">
+                <div className="col-10">
+                  <div className="table-heading-left">
+                    <h1>Combo List</h1>
+                  </div>
                 </div>
-                <div className='col-2' >
-                  <img className='table-heading-right' src='assets/images/gif-1.gif' alt='' />
+                <div className="col-2">
+                  <img
+                    className="table-heading-right"
+                    src="assets/images/gif-1.gif"
+                    alt=""
+                  />
                 </div>
               </div>
               <table>
@@ -75,48 +119,111 @@ export default function ManageCombo() {
                 </thead>
                 <tbody>
                   {combos.map((combo) => (
-                    <tr key={combo.comboId} >
+                    <tr key={combo.comboId}>
                       <td>{combo.comboId}</td>
                       <td>{combo.name}</td>
                       <td>$ {combo.price}</td>
                       <td>
                         <Dropdown>
-                          <Dropdown.Toggle className='dropdown-toggle'  ></Dropdown.Toggle>
+                          <Dropdown.Toggle className="dropdown-toggle"></Dropdown.Toggle>
 
-                          <Dropdown.Menu className='dropdown-menu' >
-                            <Dropdown.Item className='dropdown-item' ><Link className='update-button' to={`/updateCombo?${combo.id}`} >UPDATE</Link></Dropdown.Item>
-                            <Dropdown.Item className='dropdown-item' ><a onClick={() => handleShow(combo.id)} >DELETE</a></Dropdown.Item>
+                          <Dropdown.Menu className="dropdown-menu">
+                            <Dropdown.Item className="dropdown-item">
+                              <a
+                                onClick={() =>
+                                  handleShow(combo.comboId, "detail")
+                                }
+                              >
+                                Detail
+                              </a>
+                            </Dropdown.Item>
+                            <Dropdown.Item className="dropdown-item">
+                              <Link
+                                className="update-button"
+                                to={`/updateCombo?${combo.comboId}`}
+                              >
+                                Update
+                              </Link>
+                            </Dropdown.Item>
+                            <Dropdown.Item className="dropdown-item">
+                              <a
+                                onClick={() =>
+                                  handleShow(combo.comboId, "delete")
+                                }
+                              >
+                                Delete
+                              </a>
+                            </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>
                       </td>
-
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Notification</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure?</Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
-                    Close
-                  </Button>
-                  <Button variant='danger' id='delete-button' onClick={() => deleteCombo()}>
-                    DELETE
-                  </Button>
-                </Modal.Footer>
-              </Modal>
 
               {/* Add Button */}
-              <div className='add-button' >
-                <Link className='add-button-Link' to='/addCombo' >ADD</Link>
+              <div className="add-button">
+                <Link className="add-button-Link" to="/addCombo">
+                  ADD
+                </Link>
               </div>
             </div>
+
+            {/* Delete Box */}
+            <Modal show={showDelete} onHide={handleClose} centered>
+              <Modal.Header closeButton>
+                <Modal.Title>Notification</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>Are you sure?</Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+                <Button
+                  variant="danger"
+                  id="delete-button"
+                  onClick={() => deleteCombo()}
+                >
+                  DELETE
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            {/* Detail Box */}
+            <Modal show={showDetail} onHide={handleClose} centered>
+              <Modal.Header closeButton>
+                <Modal.Title>Combo Detail</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                  <Table striped bordered hover size="sm" responsive>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Service Name</th>
+                      <th>Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {listServicesOfCombo.map((value) => (
+                      <tr key={value.id} >
+                        <td>{value.id}</td>
+                        <td>{value.name}</td>
+                        <td>{value.price}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }

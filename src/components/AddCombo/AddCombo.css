@@ -100,17 +100,19 @@
     text-align: center;
     margin-top: 15px;
     margin-bottom: 15px;
+    
 }
 
 .addCombo-component .submit-button button {
     background-color: rgb(0, 201, 170);
     color: white;
     font-weight: 500;
-    font-size: lrem;
+    width: 100%;
     border-radius: 20px;
-    padding: 9px 20px;
+    padding: 9px;
     border: none;
     transition: .2s;
+    
 }
 .addCombo-component .submit-button button:hover {
     background-color: white;
@@ -119,12 +121,4 @@
 }
 .addCombo-component .submit-button button:active {
     opacity: .7;
-}
-
-.addCombo-component .notification {
-    color: white;
-    font-weight: 500;
-    font-size: 1.5rem;
-    text-align: center;
-    text-shadow: 0 2px 5px rgb(0, 0, 0, 0.15);
 }

@@ -70,8 +70,8 @@ export default function BookingSpa() {
     }),
   });
 
+  // Allow only numeric keys, backspace, and delete
   const handleKeyDown = async (e) => {
-    // Allow only numeric keys, backspace, and delete
     const allowedKeys = [
       "Backspace",
       "Delete",
@@ -103,7 +103,7 @@ export default function BookingSpa() {
   };
 
   // Read all combo
-  /* const readAllCombo = async () => {
+  const readAllCombo = async () => {
     let isFetched = true;
     await fetch("http://localhost:5000/combos/read")
       .then((res) => res.json())
@@ -117,11 +117,11 @@ export default function BookingSpa() {
     return () => {
       isFetched = false;
     };
-  }; */
+  };
 
   useEffect(() => {
     readAllService();
-    //readAllCombo();
+    readAllCombo();
   }, []);
 
   return (
@@ -280,7 +280,7 @@ export default function BookingSpa() {
                   >
                     <select class="form-select">
                       {formik.values.services.map((option, index) => (
-                        <option key={index} value={option.name}>
+                        <option key={option.id} value={option.name}>
                           {option.name}
                         </option>
                       ))}
@@ -293,29 +293,29 @@ export default function BookingSpa() {
                   imperativeModeOnly
                 />
 
-               {/*  Choose Combo
+                {/* Choose Combo */}
                 <div className="row mb-3">
                   <label>Choose Combo</label>
                   <a
-                    data-tooltip-id="combo-tooltip"
-                    data-tooltip-content="Please select a Combo"
+                    data-tooltip-id="combos-tooltip"
+                    data-tooltip-content="Please select a combo"
                     data-tooltip-variant="warning"
                     data-tooltip-place="right"
                   >
                     <select class="form-select">
-                      {formik.values.combos.map((option, index) => (
-                        <option key={index} value={option.name}>
-                          {option.name}
+                      {/* {formik.values.combos.forEach((value) => (
+                        <option key={value.id} value={value.name}>
+                          {value.name}
                         </option>
-                      ))}
+                      ))} */}
                     </select>
                   </a>
                 </div>
                 <Tooltip
-                  id="combo-tooltip"
+                  id="combos-tooltip"
                   isOpen={isOpen}
                   imperativeModeOnly
-                /> */}
+                />
 
                 {/* Switch */}
                 <div className="row mb-3">
