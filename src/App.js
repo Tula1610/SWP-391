@@ -16,8 +16,6 @@ import UpdateService from './components/UpdateService/UpdateService.js';
 import ManageCombo from './components/ManageCombo/ManageCombo.js';
 import AddCombo from './components/AddCombo/AddCombo.js';
 
-//const Home = lazy(() => delay)
-
 function App() {
   const [spinnerLoader, setSpinnerLoader] = useState(true);
 

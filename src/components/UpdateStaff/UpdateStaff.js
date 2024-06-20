@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import './UpdateStaff.css'
 import { useState } from 'react'
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -10,6 +10,7 @@ import 'react-tooltip/dist/react-tooltip.css'
 
 
 export default function UpdateStaff() {
+  const navigate = useNavigate();
   const [oldId, setOldId] = useState("");
   const location = useLocation();
   // eslint-disable-next-line
@@ -38,6 +39,7 @@ export default function UpdateStaff() {
             else {
               toast.success('Successful Updated');
               setOldId(data.id);
+              navigate("/manageStaff");
             }
           }
         })

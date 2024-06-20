@@ -2,17 +2,19 @@ import React, { useEffect } from "react";
 import "./BookingSpa.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import toast from "react-hot-toast";
 
 export default function BookingSpa() {
   const [isOpen, setIsOpen] = useState(true);
+  const [listService, setListService] = useState([]);
+  const [listCombo, setListCombo] = useState([]);
+  const [errService, setErrService] = useState();
 
   const formik = useFormik({
     initialValues: {
@@ -22,10 +24,10 @@ export default function BookingSpa() {
       petType: "",
       date: new Date(),
       services: [],
-      combos: [],
+      combo: "",
       agree: false,
     },
-    onSubmit: (values) => {
+    onSubmit: (values, onSubmitProps) => {
       fetch("http://localhost:5000/bookings/create", {
         method: "POST",
         headers: {
@@ -36,14 +38,19 @@ export default function BookingSpa() {
           phoneNumber: Number(values.phoneNumber),
           petName: values.petName,
           petType: values.petType,
-          date: Date(values.date),
+          date: values.date,
+          services: values.services,
+          combo: values.combo,
         }),
       })
         .then((res) => res.json())
         .then((data) => {
           if (data.message === 0) {
-            toast.error("Submit Unsuccessfully");
-          } else toast.success("Submit Successfully");
+            toast.error("Unsuccessfully");
+          } else {
+            toast.success("Successfully");
+            onSubmitProps.isSubmitting(false);
+          }
         })
         .catch((err) => console.log(err));
     },
@@ -54,14 +61,11 @@ export default function BookingSpa() {
         .min(10, "Please enter full number"),
       petName: Yup.string().required("Required."),
       petType: Yup.string()
-        .required("Required")
-        .typeError("Please select a pet type."),
-      services: Yup.string()
-        .required("Required")
-        .typeError("Please select a service."),
-      combos: Yup.string()
-        .required("Required")
-        .typeError("Please select a combo."),
+        .matches(/^[a-zA-Z\s]*$/, "Required.")
+        .required(),
+      combo: Yup.string()
+        .matches(/^[a-zA-Z\s]*$/, "Required.")
+        .required(),
       date: Yup.date().required("Required"),
       agree: Yup.boolean().oneOf(
         [true],
@@ -70,8 +74,8 @@ export default function BookingSpa() {
     }),
   });
 
-  // Allow only numeric keys, backspace, and delete
-  const handleKeyDown = async (e) => {
+  // Allow only numeric keys, backspace, delete and number
+  const handleKeyDownNumber = async (e) => {
     const allowedKeys = [
       "Backspace",
       "Delete",
@@ -85,14 +89,49 @@ export default function BookingSpa() {
     }
   };
 
+  // Allow only numeric keys, backspace, delete and string
+  const handleKeyDownString = async (e) => {
+    const allowedKeys = [
+      "Backspace",
+      "Delete",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+    ];
+
+    if (!/^[a-zA-Z\s]*$/.test(e.key) && !allowedKeys.includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  // Handle selected services
+  const handleChangeServices = async (e) => {
+    if (e.target.checked === true) {
+      formik.values.services.push(e.target.value);
+    } else {
+      if (e.target.value) {
+        formik.values.services.splice(
+          formik.values.services.indexOf(e.target.value),
+          1
+        );
+      }
+    }
+    formik.values.services.sort();
+    if (formik.values.services.length === 0)
+      setErrService("Please choose at least one service");
+    else setErrService("");
+  };
+
   // Read all service
   const readAllService = async () => {
     let isFetched = true;
-    await fetch("http://localhost:5000/services/read")
+    await fetch("http://localhost:5000/services/read", {
+      method: "GET",
+    })
       .then((res) => res.json())
       .then((json) => {
         if (isFetched) {
-          formik.setValues({ services: json });
+          setListService(json);
         }
       })
       .catch((err) => console.log(err));
@@ -105,11 +144,13 @@ export default function BookingSpa() {
   // Read all combo
   const readAllCombo = async () => {
     let isFetched = true;
-    await fetch("http://localhost:5000/combos/read")
+    await fetch("http://localhost:5000/combos/read", {
+      method: "Get",
+    })
       .then((res) => res.json())
       .then((json) => {
         if (isFetched) {
-          formik.setValues({ combos: json });
+          setListCombo(json);
         }
       })
       .catch((err) => console.log(err));
@@ -161,9 +202,11 @@ export default function BookingSpa() {
                   >
                     <input
                       onChange={formik.handleChange}
+                      onKeyDown={handleKeyDownString}
                       type="text"
                       name="customerName"
                       value={formik.values.customerName}
+                      placeholder="Name..."
                     />
                   </a>
                 </div>
@@ -184,11 +227,12 @@ export default function BookingSpa() {
                   >
                     <input
                       onChange={formik.handleChange}
-                      onKeyDown={handleKeyDown}
+                      onKeyDown={handleKeyDownNumber}
                       type="text"
                       maxLength={10}
                       name="phoneNumber"
                       value={formik.values.phoneNumber}
+                      placeholder="0123-456-789"
                     />
                   </a>
                 </div>
@@ -212,6 +256,7 @@ export default function BookingSpa() {
                       type="text"
                       name="petName"
                       value={formik.values.petName}
+                      placeholder="Name..."
                     />
                   </a>
                 </div>
@@ -236,6 +281,9 @@ export default function BookingSpa() {
                       value={formik.values.petType}
                       onChange={formik.handleChange}
                     >
+                      <option selected value={1}>
+                        Please choose a pet type
+                      </option>
                       <option value="Cat">Cat</option>
                       <option value="Dog">Dog</option>
                     </select>
@@ -259,10 +307,13 @@ export default function BookingSpa() {
                     <DatePicker
                       className="date-input"
                       selected={formik.values.date}
+                      minDate={new Date()}
                       onChange={(result) => {
-                        formik.setValues({ date: result });
+                        formik.setFieldValue("date", result);
                       }}
                       name="date"
+                      showTimeInput
+                      dateFormat="yyyy/MM/dd h:mm aa"
                       isClearable
                     />
                   </a>
@@ -271,48 +322,71 @@ export default function BookingSpa() {
 
                 {/* Choose Service */}
                 <div className="row mb-3">
-                  <label>Choose Service</label>
+                  <label>Service</label>
                   <a
-                    data-tooltip-id="service-tooltip"
-                    data-tooltip-content="Please select a service"
+                    data-tooltip-id="services-tooltip"
+                    data-tooltip-content={errService}
                     data-tooltip-variant="warning"
                     data-tooltip-place="right"
                   >
-                    <select class="form-select">
-                      {formik.values.services.map((option, index) => (
-                        <option key={option.id} value={option.name}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
+                    {listService.map((service) => (
+                      <div class="form-check" key={service.id}>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          onChange={(e) => handleChangeServices(e)}
+                          value={service.name}
+                        />
+                        <div className="row">
+                          <div className="col">
+                            <label class="form-check-label">
+                              {service.name}
+                            </label>
+                          </div>
+                          <div className="col">
+                            <label class="form-check-label">
+                              $ {service.price}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </a>
                 </div>
                 <Tooltip
-                  id="service-tooltip"
+                  id="services-tooltip"
                   isOpen={isOpen}
                   imperativeModeOnly
                 />
 
                 {/* Choose Combo */}
                 <div className="row mb-3">
-                  <label>Choose Combo</label>
+                  <label>Combo</label>
                   <a
-                    data-tooltip-id="combos-tooltip"
-                    data-tooltip-content="Please select a combo"
+                    data-tooltip-id="combo-tooltip"
+                    data-tooltip-content={formik.errors.combo}
                     data-tooltip-variant="warning"
                     data-tooltip-place="right"
                   >
-                    <select class="form-select">
-                      {/* {formik.values.combos.forEach((value) => (
-                        <option key={value.id} value={value.name}>
-                          {value.name}
+                    <select
+                      class="form-select"
+                      name="combo"
+                      value={formik.values.combo}
+                      onChange={formik.handleChange}
+                    >
+                      <option selected value={1}>
+                        Please choose a combo
+                      </option>
+                      {listCombo.map((combo) => (
+                        <option key={combo.id} value={combo.name}>
+                          {combo.name}
                         </option>
-                      ))} */}
+                      ))}
                     </select>
                   </a>
                 </div>
                 <Tooltip
-                  id="combos-tooltip"
+                  id="combo-tooltip"
                   isOpen={isOpen}
                   imperativeModeOnly
                 />
@@ -347,9 +421,15 @@ export default function BookingSpa() {
                 />
 
                 {/* Submit Button */}
-                <div className="submit-button">
-                  <button type="submit">SUBMIT</button>
-                </div>
+                <button
+                  className="submit-button"
+                  type="submit"
+                  disabled={
+                    !(formik.dirty && formik.isValid) || formik.isSubmitting
+                  }
+                >
+                  SUBMIT
+                </button>
               </form>
             </div>
 

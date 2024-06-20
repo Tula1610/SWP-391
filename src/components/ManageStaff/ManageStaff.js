@@ -25,7 +25,7 @@ export default function ManageStaff() {
       .catch(err => console.log(err))
   };
 
-  // Delete one staff from backend by using staff ID
+  // Delete one staff from database by ID
   const deleteStaff = () => {
     setShow(false);
     fetch(`http://localhost:5000/staffs/delete/${deleteId}`, {

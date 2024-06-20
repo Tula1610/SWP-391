@@ -21,6 +21,7 @@
 .bookingSpa-component h1 {
     color: white;
     font-weight: 500;
+    font-size: 3.5rem;
     padding-bottom: 15px;
     padding-left: 170px;
     text-shadow: 0 5px 10px rgb(0, 0, 0, 0.15);
@@ -101,12 +102,6 @@
 
 /* Submit Button */
 .bookingSpa-component .submit-button {
-    text-align: center;
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
-
-.bookingSpa-component .submit-button button {
     background-color: rgb(0, 201, 170);
     color: white;
     width: 100%;
@@ -115,21 +110,24 @@
     border-radius: 20px;
     padding: 9px 20px;
     border: none;
+    margin-bottom: 20px;
     transition: .2s;
 }
-.bookingSpa-component .submit-button button:hover {
+.bookingSpa-component .submit-button:hover {
     background-color: white;
     color: rgb(0, 201, 170);
     box-shadow: 7px 7px 10px rgb(0, 0, 0, 0.3);
 }
-.bookingSpa-component .submit-button button:active {
+.bookingSpa-component .submit-button:active {
     opacity: .7;
 }
 
-.bookingSpa-component .notification {
+.bookingSpa-component .submit-button:disabled {
+    cursor: not-allowed;
+    opacity: .7;
+}
+.bookingSpa-component .submit-button:disabled:hover {
+    background-color: rgb(0, 201, 170);
     color: white;
-    font-weight: 500;
-    font-size: 1.5rem;
-    text-align: center;
-    text-shadow: 0 2px 5px rgb(0, 0, 0, 0.15);
+    box-shadow: none;
 }

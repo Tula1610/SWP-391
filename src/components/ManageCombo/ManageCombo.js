@@ -35,16 +35,20 @@ export default function ManageCombo() {
     } else if (nameButton === "detail") {
       setComboId(comboId);
       readAllServiceByComboId();
-      setShowDetail(true);
     }
   };
 
   // Get all combo from database
   const fetchData = async () => {
+    let isFetched = true;
     await fetch("http://localhost:5000/combos/read")
       .then((res) => res.json())
-      .then((json) => setCombos(json))
+      .then((json) => {
+        if(isFetched) setCombos(json);
+      })
       .catch((err) => console.log(err));
+
+      return () =>{ isFetched = false};
   };
 
   // Delete one combo from database by combo ID
@@ -73,11 +77,12 @@ export default function ManageCombo() {
       .then((json) => {
         if (isFetched) {
           setListServicesOfCombo(json);
+          setShowDetail(true);
         }
       })
       .catch((err) => console.log(err));
 
-    return () => (isFetched = false);
+    return () => {isFetched=false};
   };
 
   // Start fetching data
@@ -205,11 +210,11 @@ export default function ManageCombo() {
                     </tr>
                   </thead>
                   <tbody>
-                    {listServicesOfCombo.map((value) => (
-                      <tr key={value.id} >
-                        <td>{value.id}</td>
-                        <td>{value.name}</td>
-                        <td>{value.price}</td>
+                    {listServicesOfCombo.map((service) => (
+                      <tr key={service.id} >
+                        <td>{service.id}</td>
+                        <td>{service.name}</td>
+                        <td>{service.price}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -221,6 +226,7 @@ export default function ManageCombo() {
                 </Button>
               </Modal.Footer>
             </Modal>
+            
           </div>
         </div>
       </div>

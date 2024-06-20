@@ -12,6 +12,8 @@ export default function AddCombo() {
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
+  const [errService, setErrService] = useState();
+
   const formik = useFormik({
     initialValues: {
       comboId: "",
@@ -21,7 +23,7 @@ export default function AddCombo() {
       agree: false,
     },
     onSubmit: (values) => {
-       fetch("http://localhost:5000/combos/create", {
+      fetch("http://localhost:5000/combos/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +32,7 @@ export default function AddCombo() {
           comboId: Number(values.comboId),
           name: values.name,
           price: Number(values.price),
-          serviceId: values.serviceId
+          serviceId: values.serviceId,
         }),
       })
         .then((res) => res.json())
@@ -50,6 +52,7 @@ export default function AddCombo() {
         .required("Required.")
         .min(2, "Must be 2 characters or more"),
       price: Yup.string().required("Required"),
+      serviceId: Yup.array().required("Required."),
       agree: Yup.boolean().oneOf(
         [true],
         "The terms and conditions must be accepted."
@@ -89,6 +92,24 @@ export default function AddCombo() {
     };
   };
 
+  // Store selected services
+  const handleChangeServices = async (e) => {
+    if (e.target.checked === true) {
+      formik.values.serviceId.push(e.target.value);
+    } else {
+      if (e.target.value) {
+        formik.values.serviceId.splice(
+          formik.values.serviceId.indexOf(e.target.value),
+          1
+        );
+      }
+    }
+    formik.values.serviceId.sort();
+    if (formik.values.serviceId.length === 0)
+      setErrService("Please choose at least one service");
+    else setErrService("");
+  };
+
   useEffect(() => {
     let isFetched = true;
     if (isFetched) readAllService();
@@ -96,21 +117,6 @@ export default function AddCombo() {
       isFetched = false;
     };
   }, []);
-
-  const handleChangeServices = async (e) => {
-    if (e.target.checked === true) {
-      formik.values.serviceId.splice(e.target.value, 0, e.target.value);
-    }
-    else {
-      formik.values.serviceId.sort();
-      const foundServiceId = formik.values.serviceId.find((value) => {
-        return e.target.value == value;
-      });
-      if(foundServiceId) {
-        formik.values.serviceId.splice(formik.values.serviceId.indexOf(foundServiceId), 1);
-      }
-    }
-  };
 
   return (
     <>
@@ -207,22 +213,33 @@ export default function AddCombo() {
 
                 {/* Choose Service */}
                 <div className="row mb-3">
-                  <label>Choose Service</label>
+                  <label>Service</label>
                   <a
                     data-tooltip-id="services-tooltip"
-                    data-tooltip-content="Require"
+                    data-tooltip-content={errService}
                     data-tooltip-variant="warning"
                     data-tooltip-place="right"
                   >
-                    {services.map((option) => (
-                      <div class="form-check" key={option.id}>
+                    {services.map((service) => (
+                      <div class="form-check" key={service.id}>
                         <input
                           class="form-check-input"
                           type="checkbox"
                           onChange={(e) => handleChangeServices(e)}
-                          value={option.id}
+                          value={service.id}
                         />
-                        <label class="form-check-label">{option.name}</label>
+                        <div className="row">
+                          <div className="col">
+                            <label class="form-check-label">
+                              {service.name}
+                            </label>
+                          </div>
+                          <div className="col">
+                            <label class="form-check-label">
+                              $ {service.price}
+                            </label>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </a>
@@ -263,9 +280,13 @@ export default function AddCombo() {
                 />
 
                 {/* Submit Button */}
-                <div className="submit-button">
-                  <button type="submit">SUBMIT</button>
-                </div>
+                <button
+                  className="submit-button"
+                  type="submit"
+                  disabled={!(formik.dirty && formik.isValid)}
+                >
+                  SUBMIT
+                </button>
               </form>
             </div>
 

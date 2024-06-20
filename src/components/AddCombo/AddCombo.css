@@ -97,28 +97,32 @@
 
 /* Submit Button */
 .addCombo-component .submit-button {
-    text-align: center;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    
-}
-
-.addCombo-component .submit-button button {
     background-color: rgb(0, 201, 170);
     color: white;
-    font-weight: 500;
     width: 100%;
+    font-weight: 500;
+    font-size: 1rem;
     border-radius: 20px;
-    padding: 9px;
+    padding: 9px 20px;
     border: none;
+    margin-bottom: 20px;
     transition: .2s;
-    
 }
-.addCombo-component .submit-button button:hover {
+.addCombo-component .submit-button:hover {
     background-color: white;
     color: rgb(0, 201, 170);
     box-shadow: 7px 7px 10px rgb(0, 0, 0, 0.3);
 }
-.addCombo-component .submit-button button:active {
+.addCombo-component .submit-button:active {
     opacity: .7;
+}
+
+.addCombo-component .submit-button:disabled {
+    cursor: not-allowed;
+    opacity: .7;
+}
+.addCombo-component .submit-button:disabled:hover {
+    background-color: rgb(0, 201, 170);
+    color: white;
+    box-shadow: none;
 }
