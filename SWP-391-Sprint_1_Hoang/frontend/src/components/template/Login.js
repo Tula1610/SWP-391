@@ -48,6 +48,12 @@ const Login = () => {
 
   const handleSubmit = async(e) =>{
     e.preventDefault()
+
+    if (data.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
     if (data.password === data.confirmPassword){
       const dataResponse = await fetch(SummaryApi.signUp.url,{
         method : SummaryApi.signUp.method,

@@ -12,37 +12,13 @@
     font-family: fantasy;
 }
 
-.avatar {
-    display: flex;
-    justify-content: center;
-}
-
-.avatar img {
-    width: 120px;
-    height: 120px;
-    object-position: center;
-    object-fit: cover;
-    border-radius: 5%;
-    border-radius: 60px;
-}
-
-.user-name{
-    display: flex;
-    justify-content: center;
-}
-
-.user-name h1{
-    font-size: 20px;
-    font-family: Cursive;
-}
-
-.combo{
+.combo {
     display: flex;
     justify-content: center;
 }
 
 .create-combo {
-    max-width:100%;
+    max-width: 100%;
 }
 
 .content .input-group, .content .row {
@@ -66,4 +42,29 @@
     display: block;
     margin-left: auto;
     margin-right: 40px;
+}
+
+.custom-select-container .custom-option {
+    display: flex;
+    align-items: center;
+}
+
+.custom-select-container .custom-option input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.custom-select-container .custom-option label {
+    margin: 0;
+}
+
+.custom-select__control {
+    min-height: 36px;
+}
+
+.custom-select__menu {
+    z-index: 1000;
+}
+
+.custom-select__multi-value {
+    background-color: #f0f0f0;
 }
