@@ -1,157 +1,183 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
+import { toast } from 'react-toastify';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import './Content.css';
 
-export default class Content extends Component {
-  state = {
-    value: []
-  };
+const CreateCombo = () => {
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
-  optionsData = [
-    {
-      label: "Bathing",
-      value: "Bathing"
-    },
-    {
-      label: "Trim nails",
-      value: "Trim nails"
-    },
-    {
-      label: "Dye hair",
-      value: "Dye hair"
-    },
-    {
-      label: "Grooming",
-      value: "Grooming"
-    }
+  const optionsData = [
+    { label: "Bathing", value: "Bathing" },
+    { label: "Trim nails", value: "Trim nails" },
+    { label: "Dye hair", value: "Dye hair" },
+    { label: "Grooming", value: "Grooming" }
   ];
 
-  handleChange = (selectedOptions) => {
-    this.setState({ value: selectedOptions });
-  };
-
-  Group = (props) => {
-    const {
-      Heading,
-      getStyles,
-      label,
-      innerProps,
-      headingProps,
-      cx,
-      theme
-    } = props;
-    const dailectContainerStyles = {
-      paddingTop: '5px'
-    };
-    return (
-      <div aria-label={label} style={getStyles("group", props)} {...innerProps}>
-        <Heading theme={theme} getStyles={getStyles} cx={cx} {...headingProps}></Heading>
-        <div>{label}</div>
-        <div style={dailectContainerStyles}></div>
-      </div>
-    );
-  };
-
-  getOptionStyles = (defaultStyles) => ({
-    ...defaultStyles
+  const [data, setData] = useState({
+    comboName: "",
+    service: [],
+    price: "",
+    startDate: new Date(),
+    endDate: new Date(),
   });
 
-  Option = (props) => {
-    const {
-      data,
-      getStyles,
-      innerRef,
-      innerProps,
-      isSelected
-    } = props;
-    const defaultStyles = getStyles("option", props);
-    const styles = this.getOptionStyles(defaultStyles);
-    return (
-      <div {...innerProps} ref={innerRef} style={styles} className="custom-option">
-        <input type="checkbox" checked={isSelected} readOnly />
-        <label>{data.label}</label>
-      </div>
-    );
+  const handleOnChange = (e) => {
+    const { id, value } = e.target;
+    setData(prev => ({
+      ...prev,
+      [id]: value
+    }));
   };
 
-  render() {
-    const { value } = this.state;
-    const customComponents = {
-      Group: this.Group,
-      Option: this.Option
-    };
-    return (
-      <div className='content'>
-        <div className='container'>
-          <div className='container-heading'><h1>Create Combo</h1></div>
-          <form>
-            <div className='combo'>
-              <div className='create-combo'>
-                <div className='input-group mb-3'>
-                  <div className="input-group-text">Combo Name</div>
-                  <input
-                    type='text'
-                    className='form-control'
-                    id='combo-name'
-                    placeholder='Enter'
-                    required
-                  />
-                </div>
+  const handleDateChange = (date, field) => {
+    setData(prev => ({
+      ...prev,
+      [field]: date
+    }));
+  };
 
-                <div className='input-group mb-3'>
-                  <div className="input-group-text">Service</div>
-                  <Select
-                    value={value}
-                    onChange={this.handleChange}
-                    options={this.optionsData}
-                    isMulti={true}
-                    components={customComponents}
-                    hideSelectedOptions={false}
-                    closeMenuOnSelect={false}
-                    className="custom-select-container"
-                    classNamePrefix="custom-select"
-                  />
-                </div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-                <div className='input-group mb-3'>
-                  <div className="input-group-text">Price</div>
-                  <input
-                    type='text'
-                    className='form-control'
-                    id='price'
-                    placeholder='Enter'
-                    required
-                  />
-                </div>
+    if (data.endDate < data.startDate) {
+      toast.error("End date cannot be before start date");
+      return;
+    }
 
-                <div className='input-group mb-3'>
-                  <div className="input-group-text">Start date</div>
-                  <input
-                    type='text'
-                    className='form-control'
-                    id='start-date'
-                    placeholder='Enter'
-                    required
-                  />
-                </div>
+    // Add the API call logic here
+    /*
+    try {
+      const response = await fetch(SummaryApi.createCombo.url, {
+        method: SummaryApi.createCombo.method,
+        headers: {
+          "Content-Type": "application/json",
+          // Uncomment and set the Authorization header if needed
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(data)
+      });
 
-                <div className='input-group mb-3'>
-                  <div className="input-group-text">End date</div>
-                  <input
-                    type='text'
-                    className='form-control'
-                    id='end-date'
-                    placeholder='Enter'
-                    required
-                  />
-                </div>
+      const dataApi = await response.json();
+
+      if (dataApi.success) {
+        toast.success(dataApi.message);
+      } else {
+        toast.error(dataApi.message);
+      }
+    } catch (error) {
+      toast.error("An error occurred while trying to create the combo");
+      console.error("Error:", error);
+    }
+    */
+  };
+
+  const handleChange = (selectedOptions) => {
+    setSelectedOptions(selectedOptions);
+    setData(prev => ({
+      ...prev,
+      service: selectedOptions.map(option => option.value)
+    }));
+  };
+
+  const customComponents = {
+    Option: (props) => {
+      const { data, getStyles, innerRef, innerProps, isSelected } = props;
+      const defaultStyles = getStyles("option", props);
+      const styles = {
+        ...defaultStyles,
+        display: 'flex',
+        alignItems: 'center',
+      };
+      return (
+        <div {...innerProps} ref={innerRef} style={styles} className="custom-option">
+          <input type="checkbox" checked={isSelected} readOnly />
+          <label>{data.label}</label>
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div className='content'>
+      <div className='container'>
+        <div className='container-heading'><h1>Create Combo</h1></div>
+        <form onSubmit={handleSubmit}>
+          <div className='combo'>
+            <div className='create-combo'>
+              <div className='input-group mb-3'>
+                <div className="input-group-text">Combo Name</div>
+                <input
+                  type='text'
+                  onChange={handleOnChange}
+                  className='form-control'
+                  id='comboName'
+                  placeholder='Enter'
+                  required
+                />
+              </div>
+
+              <div className='input-group mb-3'>
+                <div className="input-group-text">Service</div>
+                <Select
+                  value={selectedOptions}
+                  onChange={handleChange}
+                  options={optionsData}
+                  isMulti={true}
+                  components={customComponents}
+                  hideSelectedOptions={false}
+                  closeMenuOnSelect={false}
+                  className="custom-select-container"
+                  classNamePrefix="custom-select"
+                />
+              </div>
+
+              <div className='input-group mb-3'>
+                <div className="input-group-text">Price</div>
+                <input
+                  type='text'
+                  onChange={handleOnChange}
+                  className='form-control'
+                  id='price'
+                  placeholder='Enter'
+                  required
+                />
+              </div>
+
+              <div className='input-group mb-3'>
+                <div className="input-group-text">Start date</div>
+                <DatePicker
+                  selected={data.startDate}
+                  onChange={(date) => handleDateChange(date, 'startDate')}
+                  className='form-control'
+                  id='startDate'
+                  placeholderText='Enter'
+                  required
+                  minDate={new Date()}
+                />
+              </div>
+
+              <div className='input-group mb-3'>
+                <div className="input-group-text">End date</div>
+                <DatePicker
+                  selected={data.endDate}
+                  onChange={(date) => handleDateChange(date, 'endDate')}
+                  className='form-control'
+                  id='endDate'
+                  placeholderText='Enter'
+                  required
+                  minDate={data.startDate}
+                />
               </div>
             </div>
+          </div>
 
-            <button className='btn btn-success' type='submit'>Submit</button>
-          </form>
-        </div>
+          <button className='btn btn-success' type='submit'>Submit</button>
+        </form>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default CreateCombo;
