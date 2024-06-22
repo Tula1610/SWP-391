@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import DatePicker from 'react-datepicker';
+import { NumericFormat } from 'react-number-format';
 import 'react-datepicker/dist/react-datepicker.css';
+import 'react-toastify/dist/ReactToastify.css';
 import './Content.css';
 
 const CreateCombo = () => {
@@ -21,6 +23,7 @@ const CreateCombo = () => {
     price: "",
     startDate: new Date(),
     endDate: new Date(),
+    description: ""
   });
 
   const handleOnChange = (e) => {
@@ -81,6 +84,14 @@ const CreateCombo = () => {
     }));
   };
 
+  const handlePriceChange = (values) => {
+    const { value } = values;
+    setData(prev => ({
+      ...prev,
+      price: value
+    }));
+  };
+
   const customComponents = {
     Option: (props) => {
       const { data, getStyles, innerRef, innerProps, isSelected } = props;
@@ -130,17 +141,22 @@ const CreateCombo = () => {
                   closeMenuOnSelect={false}
                   className="custom-select-container"
                   classNamePrefix="custom-select"
+                  required
                 />
               </div>
 
               <div className='input-group mb-3'>
                 <div className="input-group-text">Price</div>
-                <input
-                  type='text'
-                  onChange={handleOnChange}
+                <NumericFormat
+                  value={data.price}
+                  onValueChange={handlePriceChange}
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  suffix="VND "
                   className='form-control'
-                  id='price'
-                  placeholder='Enter'
+                  placeholder='Enter price'
+                  isNumericString
+                  allowNegative={false}
                   required
                 />
               </div>
@@ -168,6 +184,18 @@ const CreateCombo = () => {
                   placeholderText='Enter'
                   required
                   minDate={data.startDate}
+                />
+              </div>
+
+              <div className='input-group mb-3'>
+                <div className="input-group-text">Description</div>
+                <input
+                  type='text'
+                  onChange={handleOnChange}
+                  className='form-control'
+                  id='description'
+                  placeholder='Enter'
+                  required
                 />
               </div>
             </div>
